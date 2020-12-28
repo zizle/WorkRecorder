@@ -1,5 +1,13 @@
 import axios from '@/libs/api.request'
 
+export const createUser = (userData) => {
+  return axios.request({
+    url: 'api/user/add/',
+    data: userData,
+    method: 'post'
+  })
+}
+
 export const login = ({ userName, password }) => {
   const data = {
     username: userName,

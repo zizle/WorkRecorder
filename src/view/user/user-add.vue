@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
+import { createUser } from '@/api/user'
+import { mapState } from 'vuex'
 export default {
   name: 'user-add',
   data () {
@@ -39,6 +42,8 @@ export default {
     const validatePhone = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入用户的手机号'))
+      } else if (!(/^1[3456789]\d{9}$/.test(value))) {
+        callback(new Error('手机号格式有误!'))
       } else {
         callback()
       }
@@ -59,12 +64,36 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      userToken: state => state.user.token
+    })
+  },
   methods: {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           // 发送请求创建用户
-          this.$Message.success('Success!')
+          const userData = {
+            operate_token: this.userToken,
+            username: this.formCustom.username,
+            password: md5(this.formCustom.phone),
+            phone: this.formCustom.phone,
+            organization: this.formCustom.organization
+          }
+          createUser(userData).then(res => {
+            this.$Modal.info({
+              title: '成功',
+              content: '新建用户成功!',
+              okText: '好'
+            })
+            this.handleReset('formCustom') // 重置表单
+          }).catch(err => {
+            this.$Modal.error({
+              title: '失败',
+              content: '新建用户失败!\n' + err.response.data.detail
+            })
+          })
         } else {
           this.$Message.error('请输入用户名和手机号!')
         }
@@ -74,7 +103,6 @@ export default {
       this.$refs[name].resetFields()
     }
   }
-
 }
 </script>
 
