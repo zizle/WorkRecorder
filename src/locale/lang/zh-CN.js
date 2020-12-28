@@ -1,4 +1,7 @@
 export default {
+  user: '用户管理',
+  user_list: '用户列表',
+  user_add: '新增用户',
   variety: '品种管理',
   variety_list: '品种列表',
   variety_add: '添加品种',

@@ -51,6 +51,26 @@ export default [
     ]
   },
   {
+    path: '/user',
+    name: 'user',
+    meta: { icon: 'md-contacts', title: '用户管理' },
+    component: Main,
+    children: [
+      {
+        path: '/manager',
+        name: 'user_list',
+        meta: { icon: 'md-cube', title: '用户列表' },
+        component: () => import('@/view/user/user-managed.vue')
+      },
+      {
+        path: '/add',
+        name: 'user_add',
+        meta: { icon: 'md-create', title: '新增用户' },
+        component: () => import('@/view/user/user-add.vue')
+      }
+    ]
+  },
+  {
     path: '/variety',
     name: 'variety',
     meta: { icon: 'logo-buffer', title: '品种管理' },

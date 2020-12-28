@@ -22,6 +22,16 @@ export const getUserInfo = (token) => {
   })
 }
 
+export const getUserList = (token) => {
+  return axios.request({
+    url: 'api/user/list/',
+    params: {
+      token
+    },
+    method: 'get'
+  })
+}
+
 export const logout = (token) => {
   return axios.request({
     url: 'logout',

@@ -1,4 +1,7 @@
 export default {
+  user: 'User-Manager',
+  user_list: 'User-List',
+  user_add: 'Create-New-User',
   variety: 'Variety-Manager',
   variety_list: 'Variety-List',
   variety_add: 'Add-Variety',
