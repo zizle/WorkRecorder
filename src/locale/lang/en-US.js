@@ -1,4 +1,6 @@
 export default {
+  short_message: 'Short-Message',
+  add_shortmsg: 'Add-Short-Message',
   user: 'User-Manager',
   user_list: 'User-List',
   user_add: 'Create-New-User',
