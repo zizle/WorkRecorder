@@ -1,4 +1,6 @@
 export default {
+  short_message: '短讯通',
+  add_shortmsg: '添加短讯通',
   user: '用户管理',
   user_list: '用户列表',
   user_add: '新增用户',

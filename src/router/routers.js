@@ -53,19 +53,29 @@ export default [
   {
     path: '/user',
     name: 'user',
-    meta: { icon: 'md-contacts', title: '用户管理' },
+    meta: {
+      icon: 'md-contacts',
+      title: '用户管理',
+      access: ['admin']
+    },
     component: Main,
     children: [
       {
         path: '/manager',
         name: 'user_list',
-        meta: { icon: 'md-cube', title: '用户列表' },
+        meta: {
+          icon: 'md-cube',
+          title: '用户列表'
+        },
         component: () => import('@/view/user/user-managed.vue')
       },
       {
         path: '/add',
         name: 'user_add',
-        meta: { icon: 'md-create', title: '新增用户' },
+        meta: {
+          icon: 'md-create',
+          title: '新增用户'
+        },
         component: () => import('@/view/user/user-add.vue')
       }
     ]
@@ -73,20 +83,69 @@ export default [
   {
     path: '/variety',
     name: 'variety',
-    meta: { icon: 'logo-buffer', title: '品种管理' },
+    meta: {
+      icon: 'logo-buffer',
+      title: '品种管理',
+      access: ['admin']
+    },
     component: Main,
     children: [
       {
         path: '/manager',
         name: 'variety_list',
-        meta: { icon: 'md-cube', title: '品种列表' },
+        meta: {
+          icon: 'md-cube',
+          title: '品种列表'
+        },
         component: () => import('@/view/variety/variety.vue')
       },
       {
         path: '/add',
         name: 'variety_add',
-        meta: { icon: 'md-create', title: '添加品种' },
+        meta: {
+          icon: 'md-create',
+          title: '添加品种'
+        },
         component: () => import('@/view/variety/variety-add.vue')
+      }
+    ]
+  },
+  {
+    path: '/short-message',
+    name: 'short_message',
+    meta: {
+      title: '短讯通',
+      icon: 'md-text',
+      showAlways: true
+    },
+    component: Main,
+    children: [
+      {
+        path: '/add-excel',
+        name: 'msg-exceladd',
+        meta: {
+          title: 'EXCEL上传',
+          icon: 'md-add'
+        },
+        component: () => import('@/view/short-message/shortmsg-excel.vue')
+      },
+      {
+        path: '/add',
+        name: 'msg-add',
+        meta: {
+          title: '添加记录',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/short-message/shortmsg-add.vue')
+      },
+      {
+        path: '/manager',
+        name: 'msg-manage',
+        meta: {
+          title: '短讯通管理',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/short-message/shortmessage.vue')
       }
     ]
   },
