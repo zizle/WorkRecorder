@@ -133,10 +133,19 @@ export default [
         path: '/add',
         name: 'msg-add',
         meta: {
-          title: '记录添加',
+          title: '添加记录',
           icon: 'md-create'
         },
         component: () => import('@/view/short-message/shortmsg-add.vue')
+      },
+      {
+        path: '/manager',
+        name: 'msg-manage',
+        meta: {
+          title: '短讯通管理',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/short-message/shortmessage.vue')
       }
     ]
   },
