@@ -35,7 +35,7 @@
           <div style="font-size:15px">{{ item.content }}</div>
             <Row type="flex" justify="end" :gutter="8">
               <div v-if="editAudit === item.id">
-                  <Col span="10">
+                  <Col span="11">
                     <label>
                       <Select style="width: 100px" :value="item.audit_mind" @on-change="currentAuditChanged">
                         <Option :value=0>正常</Option>
