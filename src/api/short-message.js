@@ -28,6 +28,14 @@ export const getAuditShortMessage = (data) => {
   })
 }
 
+export const updateMsgAuditMind = (data, msgId) => {
+  return axios.request({
+    url: 'api/shtmsg/audit/' + msgId + '/',
+    data,
+    method: 'put'
+  })
+}
+
 export const delMessageRecord = (msgId, userToken) => {
   return axios.request({
     url: 'api/shtmsg/' + msgId + '/',

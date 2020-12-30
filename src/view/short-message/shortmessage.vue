@@ -4,7 +4,6 @@
     <List :header="dataShowStatus" border size="small" item-layout="vertical">
       <ListItem v-for="item in messageList" :key="item.id">
         <ListItemMeta :title="item.create_time" :description="item.audit_description" />
-<!--        <h3>{{item.create_time}}</h3>-->
         <div style="font-size:14px">{{ item.content }}</div>
         <div class="slotAction">
           <ul>

@@ -15,7 +15,9 @@
       </List>
     </CheckboxGroup>
   </Drawer>
-  <Row :gutter="16" type="flex" justify="start" align="middle">
+
+  <Card>
+    <Row :gutter="16" type="flex" justify="start" align="middle">
     <Col><Button type="info" size="small" @click="showStaffDrawer=true">选择人员</Button></Col>
     <Col><span>当前: {{ showCheckName }}</span></Col>
     <Col offset=1><span>开始日期:</span></Col>
@@ -24,9 +26,34 @@
     <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
     <Col><Button size="small" type="primary" @click="queryCurrentMessage">查询</Button></Col>
   </Row>
+  </Card>
+  <br>
   <Row>
-    <List border size="small" item-layout="vertical">
-
+    <List border :header="dataShowStatus" size="small" item-layout="vertical">
+      <ListItem v-for="item in userMsgList" :key="item.id">
+          <ListItemMeta :title="item.create_time" :description="item.audit_description" />
+          <div style="font-size:15px">{{ item.content }}</div>
+            <Row type="flex" justify="end" :gutter="8">
+              <div v-if="editAudit === item.id">
+                  <Col span="10">
+                    <label>
+                      <Select style="width: 100px" :value="item.audit_mind" @on-change="currentAuditChanged">
+                        <Option :value=0>正常</Option>
+                        <Option :value=1>编写有误</Option>
+                        <Option :value=2>敏感词汇</Option>
+                        <Option :value=3>遭遇投诉</Option>
+                        <Option :value=4>其他问题</Option>
+                      </Select>
+                    </label>
+                  </Col>
+                  <Col span="6"><Button type="info" @click="saveAudit(item.id)">保存</Button></Col>
+                  <Col span="6"><Button @click="editAudit = -1">取消</Button></Col>
+              </div>
+              <div v-else>
+                <Col span="1"><Button @click="handleAudit(item.id)" type="primary">批注</Button></Col>
+              </div>
+            </Row>
+        </ListItem>
     </List>
   </Row>
 </div>
@@ -35,7 +62,7 @@
 <script>
 import { mapState } from 'vuex'
 import { formatDate } from '@/libs/util'
-import { getAuditShortMessage } from '@/api/short-message'
+import { getAuditShortMessage, updateMsgAuditMind } from '@/api/short-message'
 export default {
   name: 'shortmsg-audit',
   data () {
@@ -52,7 +79,14 @@ export default {
       checkedStaff: [],
 
       page: 1,
-      pageSize: 50
+      pageSize: 50,
+
+      dataShowStatus: '选择条件进行搜索数据',
+      userMsgList: [],
+
+      editAudit: -1,
+      currentAudit: 0,
+      currentMsgIndexOf: -1
     }
   },
   computed: {
@@ -62,6 +96,10 @@ export default {
     })
   },
   mounted () {
+    const cDate = new Date(this.startDate)
+    cDate.setMonth(cDate.getMonth() - 1)
+    this.startDate = cDate
+
     const userIds = []
     this.userList.forEach(item => {
       if (!userIds.includes(item.id)) {
@@ -71,6 +109,9 @@ export default {
     this.allStaffId = userIds
     this.checkedStaff = this.allStaffId
     this.indeterminate = false
+
+    // 默认请求数据
+    this.queryCurrentMessage()
   },
   watch: {
     checkedStaff () {
@@ -135,6 +176,7 @@ export default {
         this.checkAllStaff = false
       }
     },
+
     queryCurrentMessage () {
       let reqStaff = []
       if (this.checkAllStaff) {
@@ -146,9 +188,6 @@ export default {
         }
         reqStaff = this.checkedStaff
       }
-      console.log('当前人员:' + this.checkedStaff)
-      console.log('开始日期:' + this.startDate)
-      console.log('结束日期:' + this.endDate)
 
       const reqData = {
         user_token: this.userToken,
@@ -159,15 +198,69 @@ export default {
         page_size: this.pageSize
       }
       getAuditShortMessage(reqData).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err.response)
+        const data = res.data
+        this.userMsgList = data.messages
+        if (this.userMsgList.length > 0) {
+          this.dataShowStatus = '检索到以下结果(注意:数据或有分页)'
+        } else {
+          this.dataShowStatus = '没有查询到相关数据!'
+        }
+      }).catch(() => {
+        this.dataShowStatus = '查询出错,没有查询到相应数据!'
+        this.userMsgList = []
+      })
+    },
+
+    handleAudit (msgId) {
+      // 隐藏批注按钮,显示批注操作
+      this.editAudit = msgId
+      // 设置当前要保存的选项值this.currentAudit为当前条目的选项值
+      this.setCurMsgIndexOf(this.editAudit)
+      if (this.currentMsgIndexOf === -1) {
+        this.$Modal.info({ title: '错误', content: '内部出现一个未知错误!无法继续。' })
+        this.editAudit = -1
+        return
+      }
+      this.currentAudit = this.userMsgList[this.currentMsgIndexOf].audit_mind
+    },
+
+    currentAuditChanged (auditVal) {
+      this.currentAudit = auditVal
+    },
+
+    saveAudit (msgId) {
+      // 请求修改批注意见
+      const reqData = {
+        user_token: this.userToken,
+        audit_mind: this.currentAudit
+      }
+      updateMsgAuditMind(reqData, msgId).then(res => {
+        const data = res.data
+        const msgObj = this.userMsgList[this.currentMsgIndexOf]
+        msgObj.audit_description = data.audit_description
+        msgObj.audit_mind = data.audit_mind
+        this.currentMsgIndexOf = -1
+        this.editAudit = -1
+        this.$Message.success('操作成功!')
+      }).catch(() => {
+        this.$Message.error('操作失败了!')
+      })
+    },
+
+    // 检索当前操作的item所在list的下标
+    setCurMsgIndexOf (msgId) {
+      this.userMsgList.some((msgItem, msgIndex) => {
+        if (msgId === msgItem.id) {
+          this.currentMsgIndexOf = msgIndex
+          return true
+        }
       })
     }
+
   }
 }
 </script>
 
 <style scoped>
-
+/*.slotAction{ text-align: right }*/
 </style>
