@@ -20,6 +20,14 @@ export const getUserShortMessage = (userToken, page, pageSize) => {
   })
 }
 
+export const getAuditShortMessage = (data) => {
+  return axios.request({
+    url: 'api/shtmsg/audit/',
+    data,
+    method: 'post'
+  })
+}
+
 export const delMessageRecord = (msgId, userToken) => {
   return axios.request({
     url: 'api/shtmsg/' + msgId + '/',

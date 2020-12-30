@@ -8,6 +8,15 @@ export const createUser = (userData) => {
   })
 }
 
+export const setUserAccess = (userAccess, userToken) => {
+  return axios.request({
+    url: 'api/user/access/',
+    data: userAccess,
+    params: { user_token: userToken },
+    method: 'post'
+  })
+}
+
 export const login = ({ userName, password }) => {
   const data = {
     username: userName,

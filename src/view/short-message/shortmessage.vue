@@ -1,17 +1,21 @@
 <template>
 <div>
   <Row>
-    <List :header="dataShowStatus" border size="large" item-layout="vertical">
+    <List :header="dataShowStatus" border size="small" item-layout="vertical">
       <ListItem v-for="item in messageList" :key="item.id">
-        <h3>{{item.create_time}}</h3>
-        <div>{{ item.content }}</div>
-        <template slot="extra">
-         <Button type="error" size="small" :loading="delBtnLoading" data-msgid="item.id" @click="handleDelMsg($event, item.id)">删除</Button>
-        </template>
+        <ListItemMeta :title="item.create_time" :description="item.audit_description" />
+<!--        <h3>{{item.create_time}}</h3>-->
+        <div style="font-size:14px">{{ item.content }}</div>
+        <div class="slotAction">
+          <ul>
+            <li style="color: #2d8cf0"  @click="handleEditMsg($event, item.id)">编辑</li>
+            <li style="color: #ee1235" @click="handleDelMsg($event, item.id)">删除</li>
+          </ul>
+        </div>
       </ListItem>
     </List>
   </Row>
-  <Row class="paginator">
+  <Row style="text-align: right">
     <Page  :total="totalMsgCount" :page-size="pageSize" @on-change="pageChange" show-total />
   </Row>
 </div>
@@ -35,7 +39,7 @@ export default {
   watch: {
     messageList () {
       if (this.messageList.length > 0) {
-        this.dataShowStatus = ''
+        this.dataShowStatus = '我的短讯通'
       } else {
         this.dataShowStatus = '这里空空,什么也没有！'
       }
@@ -58,6 +62,13 @@ export default {
         this.totalMsgCount = data.total_count
       }).catch(err => {
         console.log(err)
+      })
+    },
+    // 编辑一条短讯通
+    handleEditMsg (e, itemId) {
+      this.$Modal.info({
+        title: '信息',
+        content: '暂不支持编辑内容!'
       })
     },
     // 删除一条短讯通
@@ -100,5 +111,8 @@ export default {
 </script>
 
 <style scoped>
-.paginator{text-align: right}
+  .slotAction{ text-align: right }
+  .slotAction ul li{display: inline-block; padding: 6px;cursor: pointer}
+  .slotAction ul li:not(:last-child):after{content:''; margin-left:12px;border: 1px solid #dddddd}
+  .slotAction ul li:last-child{}
 </style>

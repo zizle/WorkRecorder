@@ -1,18 +1,39 @@
 <template>
   <div>
-    <Table stripe :columns="userTableColumns" :data="userList" :loading="onLoading"></Table>
+    <Table stripe :columns="userTableColumns" :data="userList" :loading="tableOnLoading">
+      <template slot-scope="{ row, index }" slot="action">
+        <Button type="info" size="small" style="margin-right: 5px" @click="handleUserAccess(row)">分配</Button>
+      </template>
+    </Table>
+    <Modal v-model="isEditingUserAccess" :loading="auditLoading" :title="auditModalTitle" @on-ok="confirmUserAudit">
+      <div>
+        <CheckboxGroup v-model="auditModalAccess">
+          <Checkbox label="short_message">短讯通审核</Checkbox>
+          <Checkbox label="strategy">投顾策略</Checkbox>
+          <Checkbox label="investment">投资方案</Checkbox>
+          <Checkbox label="abnormal_work">非常态工作</Checkbox>
+          <Checkbox label="revenue">收入指标</Checkbox>
+          <Checkbox label="article">热点文章</Checkbox>
+        </CheckboxGroup>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { getUserList } from '@/api/user'
+import { setUserAccess } from '@/api/user'
 export default {
   name: 'user-managed',
   data () {
     return {
-      onLoading: true,
-      userList: [],
+      isEditingUserAccess: false,
+      auditModalTitle: '',
+      auditModalAccess: [],
+      auditModalCurrentId: 0,
+      auditLoading: false,
+      // userList: [],
+      tableOnLoading: false,
       userTableColumns: [
         {
           title: '用户名',
@@ -41,28 +62,10 @@ export default {
           key: 'organization_name'
         },
         {
-          title: '管理员',
-          key: 'is_admin',
-          maxWidth: 80,
-          render: (h, params) => {
-            return h('div', [
-              h('i-switch', {
-                props: {
-                  type: 'primary',
-                  value: params.row.is_admin === 1
-                },
-                scopedSlots: {
-                  open: () => h('span', '是'),
-                  close: () => h('span', '否')
-                },
-                on: {
-                  'on-change': value => {
-                    this.switchUserAdmin(params.row.id, value)
-                  }
-                }
-              })
-            ])
-          }
+          title: '权限分配',
+          slot: 'action',
+          width: 150,
+          align: 'center'
         },
         {
           title: '在职',
@@ -93,23 +96,32 @@ export default {
   },
   computed: {
     ...mapState({
-      userToken: state => state.user.token
+      userToken: state => state.user.token,
+      userList: state => state.user.systemUsers
     })
   },
   mounted () {
-    // 获取用户列表
-    this.getAllUser()
   },
   methods: {
-    getAllUser () {
-      getUserList(this.userToken).then(res => {
-        this.onLoading = false
-        this.userList = res.data.users
-      })
+    handleUserAccess (userItem) {
+      this.auditModalTitle = '正在分配【' + userItem.username + '】的审核权限'
+      this.auditModalAccess = userItem.access
+      this.isEditingUserAccess = true
+      this.auditModalCurrentId = userItem.id
     },
-    switchUserAdmin (userId, switchVal) {
-      console.log(userId)
-      console.log(switchVal)
+    confirmUserAudit () {
+      const userAccess = {
+        user_id: this.auditModalCurrentId,
+        user_access: this.auditModalAccess
+      }
+      this.auditLoading = true
+      setUserAccess(userAccess, this.userToken).then(res => {
+        this.auditLoading = false
+        this.$Message.success('设置成功！')
+      }).catch(() => {
+        this.auditLoading = false
+        this.$Message.error('设置失败!')
+      })
     },
     switchUserActive (userId, switchVal) {
       console.log(userId)

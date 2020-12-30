@@ -82,6 +82,9 @@ export default {
     userAvatar () {
       return this.$store.state.user.avatarImgPath
     },
+    userToken () {
+      return this.$store.state.user.token
+    },
     cacheList () {
       const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
       return list
@@ -111,6 +114,7 @@ export default {
     ...mapActions([
       'handleLogin',
       'getUnreadMessageCount',
+      'getSystemUsers',
       'getAllVarieties'
     ]),
     turnToPage (route) {
@@ -183,6 +187,8 @@ export default {
     }
     // 获取未读消息条数
     this.getUnreadMessageCount()
+    // 获取系统中的用户
+    this.getSystemUsers(this.userToken)
     // 获取系统品种
     this.getAllVarieties()
   }

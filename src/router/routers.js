@@ -133,7 +133,7 @@ export default [
         path: '/add',
         name: 'msg-add',
         meta: {
-          title: '添加记录',
+          title: '手动添加记录',
           icon: 'md-create'
         },
         component: () => import('@/view/short-message/shortmsg-add.vue')
@@ -142,10 +142,20 @@ export default [
         path: '/manager',
         name: 'msg-manage',
         meta: {
-          title: '短讯通管理',
+          title: '我的短讯通',
           icon: 'logo-buffer'
         },
         component: () => import('@/view/short-message/shortmessage.vue')
+      },
+      {
+        path: '/audit',
+        name: 'msg-audit',
+        meta: {
+          title: '审核短讯通',
+          icon: 'md-hammer',
+          access: ['admin']
+        },
+        component: () => import('@/view/short-message/shortmsg-audit.vue')
       }
     ]
   },
