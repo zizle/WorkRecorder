@@ -126,6 +126,7 @@ export default {
     switchUserActive (userId, switchVal) {
       console.log(userId)
       console.log(switchVal)
+      this.$Message.error('设置无效,该功能未上线。')
     }
   }
 }

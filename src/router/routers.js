@@ -151,11 +151,21 @@ export default [
         path: '/audit',
         name: 'msg-audit',
         meta: {
-          title: '审核短讯通',
+          title: '批注短讯通',
           icon: 'md-hammer',
-          access: ['admin']
+          access: ['admin', 'short_message']
         },
         component: () => import('@/view/short-message/shortmsg-audit.vue')
+      },
+      {
+        path: '/audit',
+        name: 'msg-statistics',
+        meta: {
+          title: '短讯通数据统计',
+          icon: 'md-calculator',
+          access: ['admin']
+        },
+        component: () => import('@/view/short-message/shortmsg-statistics.vue')
       }
     ]
   },

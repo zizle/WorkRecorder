@@ -25,21 +25,21 @@
       <Col><span>结束日期:</span></Col>
       <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
       <Col><label><Input size="small" prefix="ios-search" placeholder="关键词辅助检索" v-model="searchKeyWord"/></label></Col>
-      <Col><Button size="small" type="primary" @click="queryCurrentMessage">查询</Button></Col>
+      <Col><Button size="small" type="primary" @click="handleParamsAndQuery">查询</Button></Col>
   </Row>
   </Card>
   <br>
   <Row>
     <List border :header="dataShowStatus" size="small" item-layout="vertical">
       <ListItem v-for="item in userMsgList" :key="item.id">
-          <ListItemMeta :title="item.create_time" :description="item.audit_description" />
-          <div style="font-size:15px">{{ item.content }}</div>
-            <Row type="flex" justify="end" align="middle" :gutter="8">
-              <Col span="2" pull="20"><div class="msg-author">{{item.username}}</div></Col>
+        <ListItemMeta :title="item.create_time" :description="item.audit_description" />
+        <div style="font-size:15px">{{ item.content }}</div>
+        <Row type="flex" justify="end" align="middle" :gutter="8">
+              <Col span="1" pull="20"><div class="msg-author">{{item.username}}</div></Col>
               <div v-if="editAudit === item.id">
-                  <Col span="11">
+                  <Col span="12">
                     <label>
-                      <Select style="width: 100px" :value="item.audit_mind" @on-change="currentAuditChanged">
+                      <Select size='small' style="width: 100px" :value="item.audit_mind" @on-change="currentAuditChanged">
                         <Option :value=0>正常</Option>
                         <Option :value=1>编写有误</Option>
                         <Option :value=2>敏感词汇</Option>
@@ -48,14 +48,15 @@
                       </Select>
                     </label>
                   </Col>
-                  <Col span="6"><Button type="info" @click="saveAudit(item.id)">保存</Button></Col>
-                  <Col span="6"><Button @click="editAudit = -1">取消</Button></Col>
+                  <Col span="5"><Button size='small' type="info" @click="saveAudit(item.id)">保存</Button></Col>
+                  <Col span="5"><Button size='small' @click="editAudit = -1">取消</Button></Col>
               </div>
               <div v-else>
-                <Col span="1"><Button @click="handleAudit(item.id)" type="primary">批注</Button></Col>
+                <Col span="12"><Button size='small' @click="handleAudit(item.id)" type="primary">批注</Button></Col>
+                <Col span="12"><Button size='small' @click="auditDelMessage(item.id)" type="error" :loading="delBtnLoading">删除</Button></Col>
               </div>
             </Row>
-        </ListItem>
+      </ListItem>
     </List>
   </Row>
   <Row style="text-align: right">
@@ -67,7 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import { formatDate } from '@/libs/util'
-import { getAuditShortMessage, updateMsgAuditMind } from '@/api/short-message'
+import { getAuditShortMessage, updateMsgAuditMind, delMessageRecord } from '@/api/short-message'
 export default {
   name: 'shortmsg-audit',
   data () {
@@ -93,7 +94,9 @@ export default {
 
       editAudit: -1,
       currentAudit: 0,
-      currentMsgIndexOf: -1
+      currentMsgIndexOf: -1,
+
+      delBtnLoading: false
     }
   },
   computed: {
@@ -184,6 +187,11 @@ export default {
       }
     },
 
+    handleParamsAndQuery () {
+      this.page = 1
+      this.queryCurrentMessage()
+    },
+
     queryCurrentMessage () {
       let reqStaff = []
       if (this.checkAllStaff) {
@@ -207,7 +215,6 @@ export default {
       }
       getAuditShortMessage(reqData).then(res => {
         const data = res.data
-        console.log(data)
         this.userMsgList = data.messages
         this.totalMsgCount = data.total_count
         if (this.userMsgList.length > 0) {
@@ -270,6 +277,27 @@ export default {
           return true
         }
       })
+    },
+
+    auditDelMessage (msgId) {
+      this.$Modal.confirm({
+        title: '警告',
+        content: '确认删除吗？删除将不可恢复!',
+        closeable: true,
+        onOk: () => {
+          this.delBtnLoading = true
+          this.setCurMsgIndexOf(msgId)
+          delMessageRecord(msgId, this.userToken).then(() => {
+            this.userMsgList.splice(this.currentMsgIndexOf, 1)
+            this.$Message.success('删除成功!')
+            this.delBtnLoading = false
+            this.totalMsgCount -= 1
+          }).catch((err) => {
+            this.$Message.error(err.response.data.detail)
+            this.delBtnLoading = false
+          })
+        }
+      })
     }
 
   }
@@ -279,6 +307,6 @@ export default {
 <style scoped>
 /*.slotAction{ text-align: right }*/
   .msg-author{
-    width:40px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:5px
+    width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;
   }
 </style>

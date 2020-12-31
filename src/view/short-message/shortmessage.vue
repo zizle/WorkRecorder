@@ -93,8 +93,8 @@ export default {
               this.$Message.success('删除成功!')
               this.delBtnLoading = false
               this.totalMsgCount -= 1
-            }).catch(() => {
-              this.$Message.error('删除失败!')
+            }).catch((err) => {
+              this.$Message.error(err.response.data.detail)
               this.delBtnLoading = false
             })
           }
