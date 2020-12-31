@@ -24,9 +24,9 @@
       <Col><DatePicker v-model="startDate" size="small" style="width:110px" @on-change="startDateChanged"></DatePicker></Col>
       <Col><span>结束日期:</span></Col>
       <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
-      <Col><label><Input size="small" prefix="ios-search" placeholder="关键词辅助检索" v-model="searchKeyWord"/></label></Col>
+      <Col><label><Input size="small" prefix="ios-search" placeholder="关键词段辅助检索" v-model="searchKeyWord"/></label></Col>
       <Col><Button size="small" type="primary" @click="handleParamsAndQuery">查询</Button></Col>
-  </Row>
+    </Row>
   </Card>
   <br>
   <Row>
@@ -68,7 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import { formatDate } from '@/libs/util'
-import { getAuditShortMessage, updateMsgAuditMind, delMessageRecord } from '@/api/short-message'
+import { getShortMessage, updateMsgAuditMind, delMessageRecord } from '@/api/short-message'
 export default {
   name: 'shortmsg-audit',
   data () {
@@ -208,12 +208,13 @@ export default {
         user_token: this.userToken,
         start_date: formatDate(this.startDate),
         end_date: formatDate(this.endDate),
-        req_staff: reqStaff,
         page: this.page,
         page_size: this.pageSize,
-        keyword: this.searchKeyWord
+        keyword: this.searchKeyWord,
+        req_staff: reqStaff,
+        is_audit: 1
       }
-      getAuditShortMessage(reqData).then(res => {
+      getShortMessage(reqData).then(res => {
         const data = res.data
         this.userMsgList = data.messages
         this.totalMsgCount = data.total_count
