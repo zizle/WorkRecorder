@@ -18,13 +18,14 @@
 
   <Card>
     <Row :gutter="16" type="flex" justify="start" align="middle">
-    <Col><Button type="info" size="small" @click="showStaffDrawer=true">选择人员</Button></Col>
-    <Col><span>当前: {{ showCheckName }}</span></Col>
-    <Col offset=1><span>开始日期:</span></Col>
-    <Col><DatePicker v-model="startDate" size="small" style="width:110px" @on-change="startDateChanged"></DatePicker></Col>
-    <Col><span>结束日期:</span></Col>
-    <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
-    <Col><Button size="small" type="primary" @click="queryCurrentMessage">查询</Button></Col>
+      <Col><Button type="info" size="small" @click="showStaffDrawer=true">选择人员</Button></Col>
+      <Col><span>当前: {{ showCheckName }}</span></Col>
+      <Col offset=1><span>开始日期:</span></Col>
+      <Col><DatePicker v-model="startDate" size="small" style="width:110px" @on-change="startDateChanged"></DatePicker></Col>
+      <Col><span>结束日期:</span></Col>
+      <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
+      <Col><label><Input size="small" prefix="ios-search" placeholder="关键词辅助检索" v-model="searchKeyWord"/></label></Col>
+      <Col><Button size="small" type="primary" @click="queryCurrentMessage">查询</Button></Col>
   </Row>
   </Card>
   <br>
@@ -33,7 +34,8 @@
       <ListItem v-for="item in userMsgList" :key="item.id">
           <ListItemMeta :title="item.create_time" :description="item.audit_description" />
           <div style="font-size:15px">{{ item.content }}</div>
-            <Row type="flex" justify="end" :gutter="8">
+            <Row type="flex" justify="end" align="middle" :gutter="8">
+              <Col span="2" pull="20"><div class="msg-author">{{item.username}}</div></Col>
               <div v-if="editAudit === item.id">
                   <Col span="11">
                     <label>
@@ -56,6 +58,9 @@
         </ListItem>
     </List>
   </Row>
+  <Row style="text-align: right">
+    <Page  :total="totalMsgCount" :page-size="pageSize" @on-change="pageChange" show-total />
+  </Row>
 </div>
 </template>
 
@@ -70,6 +75,7 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       allStaffId: [],
+      searchKeyWord: '',
 
       showStaffDrawer: false,
       indeterminate: true,
@@ -79,10 +85,11 @@ export default {
       checkedStaff: [],
 
       page: 1,
-      pageSize: 50,
+      pageSize: 40,
 
       dataShowStatus: '选择条件进行搜索数据',
       userMsgList: [],
+      totalMsgCount: 0,
 
       editAudit: -1,
       currentAudit: 0,
@@ -195,11 +202,14 @@ export default {
         end_date: formatDate(this.endDate),
         req_staff: reqStaff,
         page: this.page,
-        page_size: this.pageSize
+        page_size: this.pageSize,
+        keyword: this.searchKeyWord
       }
       getAuditShortMessage(reqData).then(res => {
         const data = res.data
+        console.log(data)
         this.userMsgList = data.messages
+        this.totalMsgCount = data.total_count
         if (this.userMsgList.length > 0) {
           this.dataShowStatus = '检索到以下结果(注意:数据或有分页)'
         } else {
@@ -209,6 +219,11 @@ export default {
         this.dataShowStatus = '查询出错,没有查询到相应数据!'
         this.userMsgList = []
       })
+    },
+
+    pageChange (page) {
+      this.page = page
+      this.queryCurrentMessage()
     },
 
     handleAudit (msgId) {
@@ -263,4 +278,7 @@ export default {
 
 <style scoped>
 /*.slotAction{ text-align: right }*/
+  .msg-author{
+    width:40px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:5px
+  }
 </style>
