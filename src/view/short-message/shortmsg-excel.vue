@@ -3,7 +3,7 @@
 </style>
 <template>
   <div>
-    <Card title="导入短讯通EXCEL">
+    <Card title="EXCEL文件导入">
       <Row>
         <Upload
           ref="upload"
@@ -12,10 +12,16 @@
           action=""
           :before-upload="handleUploadExcel">
           <div style="padding: 20px 0">
-              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+              <Icon type="ios-cloud-upload" size="54" style="color: #3399ff"></Icon>
               <p>点击或拖动文件到这里上传</p>
           </div>
         </Upload>
+      </Row>
+      <Row>
+        <div>文件格式：后缀【xlsx】或【xls】的EXCEL合法文件。</div>
+        <div>表格格式：Sheet名为【短讯通记录】字样，第一行为表头且各列为【日期，信息内容，类别，影响品种，备注】字样,其他列确保无内容。</div>
+        <div style="color:#fb700d">特别注意：1. 第一列【日期】为日期格式。2. 要添加系统已存在的记录日期之前的数据需使用【手动添加】。</div>
+        <div>错误排查：系统只会读取比当前已存在的数据日期大的数据行。例如：当前<span style="color:#fb700d">系统记录截止2020.12.01，上传只读2020.12.02及之后日期的记录。</span></div>
       </Row>
     </Card>
     <Row class="margin-top-10">
@@ -40,7 +46,7 @@ export default {
     return {
       uploadServer: '',
       uploadWithData: {},
-      dataShowStatus: '*暂无数据',
+      dataShowStatus: '*暂无上传数据',
       newMsgList: [],
       delBtnLoading: false
     }

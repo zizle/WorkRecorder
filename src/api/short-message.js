@@ -8,15 +8,27 @@ export const uploadExcel = (formData) => {
   })
 }
 
-export const getUserShortMessage = (userToken, page, pageSize) => {
+export const getShortMessage = (data) => {
   return axios.request({
     url: 'api/shtmsg/',
-    params: {
-      page: page,
-      page_size: pageSize,
-      user_token: userToken
-    },
-    method: 'get'
+    data,
+    method: 'post'
+  })
+}
+
+export const getAuditShortMessage = (data) => {
+  return axios.request({
+    url: 'api/shtmsg/audit/',
+    data,
+    method: 'post'
+  })
+}
+
+export const updateMsgAuditMind = (data, msgId) => {
+  return axios.request({
+    url: 'api/shtmsg/audit/' + msgId + '/',
+    data,
+    method: 'put'
   })
 }
 

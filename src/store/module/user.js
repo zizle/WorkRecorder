@@ -1,5 +1,6 @@
 import {
   login,
+  getUserList,
   getUserInfo,
   getMessage,
   getContentByMsgId,
@@ -17,6 +18,7 @@ export default {
     avatarImgPath: '',
     token: getToken(),
     access: '',
+    systemUsers: [],
     hasGetInfo: false,
     unreadCount: 0,
     messageUnreadList: [],
@@ -40,6 +42,9 @@ export default {
     setToken (state, token) {
       state.token = token
       setToken(token)
+    },
+    setSystemUsers (state, users) {
+      state.systemUsers = users
     },
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
@@ -124,6 +129,19 @@ export default {
         }
       })
     },
+    // 获取系统中的所有用户
+    getSystemUsers ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        getUserList(state.token).then(res => {
+          const data = res.data
+          commit('setSystemUsers', data.users)
+          resolve(data)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
     getUnreadMessageCount ({ state, commit }) {
       getUnreadCount().then(res => {

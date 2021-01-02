@@ -397,3 +397,20 @@ export const setTitle = (routeItem, vm) => {
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
 }
+
+export const formatDateTime = (dateItem) => {
+  const y = dateItem.getFullYear()
+  const m = (dateItem.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dateItem.getDate() + '').padStart(2, '0')
+  const hh = (dateItem.getHours() + '').padStart(2, '0')
+  const mm = (dateItem.getMinutes() + '').padStart(2, '0')
+  const ss = (dateItem.getSeconds() + '').padStart(2, '0')
+  return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+}
+
+export const formatDate = (dateItem) => {
+  const y = dateItem.getFullYear()
+  const m = (dateItem.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dateItem.getDate() + '').padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
