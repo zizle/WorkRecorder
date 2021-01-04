@@ -39,3 +39,37 @@ export const delMessageRecord = (msgId, userToken) => {
     params: { user_token: userToken }
   })
 }
+
+// 请求月排名数据
+export const getMonthRank = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/month-rank/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
+// 请求月日详情数据
+export const getMonthDetail = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/month-detail/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
+
+// 请求年排名数据
+export const getYearRank = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/year-rank/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
+// 请求年里的月详情数据
+export const getYearDetail = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/year-detail/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
