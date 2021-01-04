@@ -58,5 +58,18 @@ export const getMonthDetail = (sDate) => {
 }
 
 // 请求年排名数据
-
+export const getYearRank = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/year-rank/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
 // 请求年里的月详情数据
+export const getYearDetail = (sDate) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/year-detail/',
+    params: { query_date: sDate },
+    method: 'get'
+  })
+}
