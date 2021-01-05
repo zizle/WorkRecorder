@@ -73,3 +73,12 @@ export const getYearDetail = (sDate) => {
     method: 'get'
   })
 }
+
+// 用户获取自己当年的累计数
+export const getShortMsgYearTotal = (userToken) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/year-total/',
+    params: { user_token: userToken },
+    method: 'get'
+  })
+}

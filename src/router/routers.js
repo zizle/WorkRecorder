@@ -171,6 +171,25 @@ export default [
   },
   {
     path: '',
+    name: 'help',
+    meta: {
+      title: '使用手册'
+    },
+    component: Main,
+    children: [
+      {
+        path: '/helper',
+        name: 'helper',
+        meta: {
+          title: '使用手册',
+          icon: ''
+        },
+        component: () => import('@/view/helper/helper.vue')
+      }
+    ]
+  },
+  {
+    path: '',
     name: 'doc',
     meta: {
       title: '文档',

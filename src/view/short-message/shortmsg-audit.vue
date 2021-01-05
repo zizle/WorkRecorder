@@ -21,9 +21,9 @@
       <Col><Button type="info" size="small" @click="showStaffDrawer=true">选择人员</Button></Col>
       <Col><span>当前: {{ showCheckName }}</span></Col>
       <Col offset=1><span>开始日期:</span></Col>
-      <Col><DatePicker v-model="startDate" size="small" style="width:110px" @on-change="startDateChanged"></DatePicker></Col>
+      <Col><DatePicker v-model="startDate" size="small" style="width:115px" @on-change="startDateChanged"></DatePicker></Col>
       <Col><span>结束日期:</span></Col>
-      <Col><DatePicker v-model="endDate" size="small" style="width:110px" @on-change="endDateChanged"></DatePicker></Col>
+      <Col><DatePicker v-model="endDate" size="small" style="width:115px" @on-change="endDateChanged"></DatePicker></Col>
       <Col><label><Input size="small" prefix="ios-search" placeholder="关键词段辅助检索" v-model="searchKeyWord"/></label></Col>
       <Col><Button size="small" type="primary" @click="handleParamsAndQuery">查询</Button></Col>
     </Row>
