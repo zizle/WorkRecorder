@@ -31,6 +31,7 @@
                 show-summary
                 border
                 sum-text="合计"
+                :row-class-name="fixedRowHeight"
                 :columns="monthAmountRankColumns"
                 :data="monthAmountRankData"
                 :loading="monthRankLoading">
@@ -44,6 +45,7 @@
                 border
                 show-summary
                 sum-text="合计"
+                :row-class-name="fixedRowHeight"
                 :columns="monthQualityRankColumns"
                 :data="monthQualityRankData"
                 :loading="monthRankLoading">
@@ -57,8 +59,8 @@
             <Table
               size="small"
               highlight-row
-              stripe
               border
+              :row-class-name="detailTableRowClass"
               :columns="monthDetailColumns"
               :data="monthDetailData"
               :loading="monthDetailLoading">
@@ -94,6 +96,7 @@
                 show-summary
                 border
                 sum-text="合计"
+                :row-class-name="fixedRowHeight"
                 :columns="yearAmountRankColumns"
                 :data="yearAmountRankData"
                 :loading="yearRankLoading">
@@ -107,6 +110,7 @@
                 border
                 show-summary
                 sum-text="合计"
+                :row-class-name="fixedRowHeight"
                 :columns="yearQualityRankColumns"
                 :data="yearQualityRankData"
                 :loading="yearRankLoading">
@@ -122,6 +126,9 @@
               highlight-row
               stripe
               border
+              show-summary
+              sum-text="合计"
+              :row-class-name="detailTableRowClass"
               :columns="yearDetailColumns"
               :data="yearDetailData"
               :loading="yearDetailLoading">
@@ -132,7 +139,6 @@
     </template>
   </div>
 </template>
-
 <script>
 import { formatDate } from '@/libs/util'
 import {
@@ -144,6 +150,7 @@ export default {
   data () {
     return {
       currentTabName: 'monthly',
+      firstClickedTab: true,
 
       currentDate: new Date(),
       currentYear: new Date(),
@@ -155,20 +162,20 @@ export default {
         {
           title: '排名',
           key: 'rank',
-          align: 'right',
+          align: 'center',
           width: 70
         },
         {
           title: '姓名',
           key: 'username',
-          align: 'right'
+          align: 'center'
         },
         {
           title: '数量',
           key: 'count',
           sortable: true,
           sortType: 'desc',
-          align: 'right'
+          align: 'center'
         }
       ],
       monthAmountRankData: [],
@@ -178,19 +185,19 @@ export default {
           title: '排名',
           key: 'rank',
           width: 70,
-          align: 'right'
+          align: 'center'
         },
         {
           title: '姓名',
           key: 'username',
-          align: 'right'
+          align: 'center'
         },
         {
           title: '标记数',
           key: 'count',
           sortable: true,
           sortType: 'desc',
-          align: 'right'
+          align: 'center'
         }
       ],
       monthQualityRankData: [],
@@ -205,20 +212,20 @@ export default {
         {
           title: '排名',
           key: 'rank',
-          align: 'right',
+          align: 'center',
           width: 70
         },
         {
           title: '姓名',
           key: 'username',
-          align: 'right'
+          align: 'center'
         },
         {
           title: '数量',
           key: 'count',
           sortable: true,
           sortType: 'desc',
-          align: 'right'
+          align: 'center'
         }
       ],
       yearAmountRankData: [],
@@ -228,19 +235,19 @@ export default {
           title: '排名',
           key: 'rank',
           width: 70,
-          align: 'right'
+          align: 'center'
         },
         {
           title: '姓名',
           key: 'username',
-          align: 'right'
+          align: 'center'
         },
         {
           title: '标记数',
           key: 'count',
           sortable: true,
           sortType: 'desc',
-          align: 'right'
+          align: 'center'
         }
       ],
       yearQualityRankData: [],
@@ -268,6 +275,7 @@ export default {
       this.getMonthDetailData() // 获取月明细数据
     },
     currentYear () {
+      this.getYearDetailHeaders()
       this.getYearRankData()
       this.getYearDetailData()
     }
@@ -276,12 +284,17 @@ export default {
     // 标签被点击
     tabClicked (tabName) {
       this.currentTabName = tabName
+      if (this.currentTabName === 'annual' && this.firstClickedTab) {
+        this.getYearDetailHeaders()
+        this.getYearRankData()
+        this.getYearDetailData()
+      }
     },
     // 获取月份的详情日期
     getMonthDetailHeaders () {
       let nextMonthDate = new Date()
       const detailHeaders = [
-        { title: '姓名', key: 'username', width: 80, fixed: 'left' }
+        { title: '姓名', key: 'username', width: 60, align: 'center', fixed: 'left' }
       ]
       const m = this.currentDate.getMonth()
       const y = this.currentDate.getFullYear()
@@ -294,18 +307,36 @@ export default {
       }
       nextMonthDate.setDate(1)
       for (let i = this.currentDate.getTime(); i < nextMonthDate.getTime(); i += 24 * 60 * 60 * 1000) {
-        let d3 = new Date(i)
-        const dateStr = formatDate(d3)
+        let d = new Date(i)
+        const dateStr = formatDate(d)
         detailHeaders.push(
           {
             title: dateStr.substring(5, 10).replace('-', '.'),
             key: dateStr,
-            width: 68,
+            width: 40,
             align: 'right'
           }
         )
       }
       this.monthDetailColumns = detailHeaders
+    },
+    // 获取一年内的所有月份
+    getYearDetailHeaders () {
+      const detailHeaders = [
+        { title: '姓名', key: 'username', width: 60, align: 'center', fixed: 'left' }
+      ]
+      const y = this.currentYear.getFullYear()
+      for (let i = 1; i <= 12; i += 1) {
+        const s = y + '-' + (Array(2).join('0') + i).slice(-2)
+        detailHeaders.push(
+          {
+            title: s.replace('-', '.'),
+            key: s,
+            align: 'center'
+          }
+        )
+      }
+      this.yearDetailColumns = detailHeaders
     },
     swapToPreMonth () {
       let d = new Date()
@@ -358,13 +389,11 @@ export default {
     },
     yearSelected (yearStr) {
       let d = new Date(yearStr)
-      console.log(d)
       this.currentYear = d
     },
     // 请求月排名数据
     getMonthRankData () {
       getMonthRank(formatDate(this.currentDate)).then(res => {
-        console.log(res)
         this.monthRankLoading = false
         const data = res.data
         this.monthAmountRankData = data.amount_rank
@@ -376,7 +405,6 @@ export default {
     // 请求年排名数据
     getYearRankData () {
       getYearRank(formatDate(this.currentYear)).then(res => {
-        console.log(res)
         const data = res.data
         this.yearRankLoading = false
         this.yearAmountRankData = data.amount_rank
@@ -388,7 +416,6 @@ export default {
     // 请求月详情数据
     getMonthDetailData () {
       getMonthDetail(formatDate(this.currentDate)).then(res => {
-        console.log(res)
         const data = res.data
         this.monthDetailLoading = false
         this.monthDetailData = data.month_detail
@@ -398,17 +425,43 @@ export default {
     },
     getYearDetailData () {
       getYearDetail(formatDate(this.currentYear)).then(res => {
-        console.log(res)
+        const data = res.data
+        this.yearDetailLoading = false
+        this.yearDetailData = data.year_detail
       }).catch(() => {
-
       })
+    },
+    detailTableRowClass (row, index) {
+      if (index % 2 === 0) {
+        return 'table-color-row'
+      } else {
+        return 'table-no-color-row'
+      }
+    },
+    fixedRowHeight () {
+      return 'fixed-row-height'
     }
   }
 }
 </script>
 
-<style scoped>
-.expand-row{
-  margin-bottom: 16px;
-}
+<style>
+  .ivu-table {
+    color:#222222;
+  }
+  .ivu-table .fixed-row-height td{
+    height: 30px;
+  }
+  .ivu-table .table-color-row td{
+    background-color:#e7f1f0;
+    height: 30px;
+  }
+  .ivu-table .table-no-color-row td{
+    background-color:#f4f4f4;
+    height: 30px;
+  }
+  .ivu-table-cell {
+    padding-left:1px;
+    padding-right:4px;
+  }
 </style>
