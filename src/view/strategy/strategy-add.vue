@@ -35,6 +35,12 @@
         <FormItem label="结果收益" prop="profit">
           <Input type="number" placeholder="用`+`和`-`表示盈亏" v-model="formData.profit"></Input>
         </FormItem>
+        <FormItem label="状态">
+          <RadioGroup v-model="formData.is_running">
+            <Radio :label=1>运行中</Radio>
+            <Radio :label=0>已结束</Radio>
+          </RadioGroup>
+        </FormItem>
         <FormItem label="备注">
           <Input type="text" placeholder="备注" v-model="formData.note"></Input>
         </FormItem>
@@ -87,6 +93,7 @@ export default {
         open_price: '',
         close_price: '',
         profit: '',
+        is_running: 0,
         note: ''
       },
       ruleForm: {
@@ -125,11 +132,13 @@ export default {
             open_price: this.formData.open_price,
             close_price: this.formData.close_price,
             profit: this.formData.profit,
+            is_running: this.formData.is_running,
             note: this.formData.note
           }
           // 网络请求
           addStrategy(data).then(res => {
-            console.log(res)
+            this.$Message.success('添加成功!')
+            this.handleReset()
           }).catch(err => {
             if (err.response.status === 422) {
               this.$Modal.error({ title: '错误', content: '数据填写有误,请检查后再添加!' })

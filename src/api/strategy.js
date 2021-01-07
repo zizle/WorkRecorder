@@ -23,3 +23,11 @@ export const deleteOneStrategy = (straId, userToken) => {
     method: 'delete'
   })
 }
+
+export const getMonthStrategyStatistics = (queryDate) => {
+  return axios.request({
+    url: 'api/strategy/statistics/month/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}

@@ -20,27 +20,28 @@
   <div style="margin: 5px;color: #fd7c3c"><h4>详细数据</h4></div>
   <List :header="listHeaderText" border size="small" item-layout="vertical">
     <ListItem v-for="item in strategyList" :key="item.id">
-      <Row :gutter="24" type="flex" justify="start" align="middle">
-        <Col>创建日期：<span class="blue">{{item.create_time}}</span></Col>
-        <Col>品种合约：<span class="blue">xxxx</span></Col>
-        <Col>方向：<span class="blue">{{item.direction}}</span></Col>
-        <Col>手数：<span class="blue">{{item.hands}}</span></Col>
-        <Col>开仓：<span class="blue">{{item.open_price}}</span></Col>
-        <Col>平仓：<span class="blue">{{item.close_price}}</span></Col>
-        <Col>盈亏：<span :class="item.profit>=0?'red':'green'">{{item.profit}}</span></Col>
+      <Row :gutter="8" type="flex" justify="start" align="middle">
+        <Col span="3">创建日期：<span class="blue">{{item.create_time}}</span></Col>
+        <Col span="3">合约：<span class="blue">{{ item.contract_name }}</span></Col>
+        <Col span="2">方向：<span class="blue">{{item.direction}}</span></Col>
+        <Col span="2">手数：<span class="blue">{{item.hands}}</span></Col>
+        <Col span="3">开仓：<span class="blue">{{item.open_price}}</span></Col>
+        <Col span="3">平仓：<span class="blue">{{item.close_price}}</span></Col>
+        <Col span="2">盈亏：<span :class="item.profit>=0?'red':'green'">{{item.profit}}</span></Col>
       </Row>
       <Row class="strategy-content">{{item.content}}</Row>
       <Row class="strategy-note" v-if="item.note">备注：{{item.note}}</Row>
       <Row type="flex" align="middle">
-        <Col span="8"><div class="msg-author">{{ item.username }}</div></Col>
-          <Col span="16">
-            <div class="slotAction">
-              <ul>
-                <li style="color: #2d8cf0"  @click="handleEditStrategy(item.id)">编辑</li>
-                <li style="color: #ee1235" @click="handleDelStrategy(item.id)">删除</li>
-              </ul>
-            </div>
-          </Col>
+        <Col span="1"><div class="msg-author">{{ item.username }}</div></Col>
+        <Col span="1"><div :class="item.is_running? 'stra-status-runing':'stra-status'">{{ item.is_running? '运行中':'已结束' }}</div></Col>
+        <Col span="22">
+          <div class="slotAction">
+            <ul>
+              <li style="color: #2d8cf0"  @click="handleEditStrategy(item.id)">编辑</li>
+              <li style="color: #ee1235" @click="handleDelStrategy(item.id)">删除</li>
+            </ul>
+          </div>
+        </Col>
       </Row>
     </ListItem>
   </List>
@@ -119,6 +120,9 @@ export default {
     const cDate = new Date(this.startDate)
     cDate.setMonth(cDate.getMonth() - 1)
     this.startDate = cDate
+
+    // 初始化数据
+    this.getCurrentStrategy()
   },
   methods: {
     startDateChanged (dateStr) {
@@ -136,10 +140,14 @@ export default {
     },
     // 获取当前用户的查询记录
     getCurrentStrategy () {
+      const endDate = new Date()
+      endDate.setFullYear(this.endDate.getFullYear())
+      endDate.setMonth(this.endDate.getMonth())
+      endDate.setDate(this.endDate.getDate() + 1) // 由于不包含this.endDate指定日期,所以+1
       const reqData = {
         user_token: this.userToken,
         start_date: formatDate(this.startDate),
-        end_date: formatDate(this.endDate),
+        end_date: formatDate(endDate),
         page: this.currentPage,
         page_size: this.pageSize,
         keyword: this.searchKeyWord
@@ -175,9 +183,10 @@ export default {
           if (this.currentStraIndexOf !== -1) {
             // 发起删除请求
             deleteOneStrategy(straId, this.userToken).then(() => {
-              this.strategyList.splice(this.currentStraIndexOf, 1)
+              // this.strategyList.splice(this.currentStraIndexOf, 1)
+              // 重新刷新数据
+              this.getCurrentStrategy()
               this.$Message.success('删除成功!')
-              this.totalCount -= 1
               this.currentStraIndexOf = -1
             }).catch(err => {
               this.$Message.error(err.response.data.detail)
@@ -234,5 +243,11 @@ export default {
   .slotAction ul li:last-child{}
   .msg-author{
     width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;font-size: 12px;
+  }
+  .stra-status{
+    width:45px;text-align:center;background-color:#999999;color:#ffffff;border-radius:3px;font-size: 12px;
+  }
+  .stra-status-runing{
+    width:45px;text-align:center;color:#ffffff;border-radius:3px;font-size: 12px;background-color:#cc4014;
   }
 </style>
