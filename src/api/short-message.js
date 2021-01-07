@@ -40,6 +40,14 @@ export const delMessageRecord = (msgId, userToken) => {
   })
 }
 
+export const delMsgWithJoinTime = (data) => {
+  return axios.request({
+    url: 'api/shtmsg/excel/',
+    data,
+    method: 'delete'
+  })
+}
+
 // 请求月排名数据
 export const getMonthRank = (sDate) => {
   return axios.request({

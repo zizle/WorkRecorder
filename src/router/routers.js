@@ -169,6 +169,30 @@ export default [
       }
     ]
   },
+
+  {
+    path: '',
+    name: 'strategy',
+    meta: { title: '投顾策略', showAlways: true, icon: 'md-locate' },
+    component: Main,
+    children: [
+      {
+        path: '/add-strategy',
+        name: 'strategy-add',
+        meta: {
+          title: '手动添加记录',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/strategy/strategy-add.vue')
+      },
+      {
+        path: '/my-strategy',
+        name: 'my_strategy',
+        meta: { title: '我的投顾策略', icon: 'logo-buffer' },
+        component: () => import('@/view/strategy/strategy-my.vue')
+      }
+    ]
+  },
   {
     path: '',
     name: 'help',
@@ -188,6 +212,7 @@ export default [
       }
     ]
   },
+
   {
     path: '',
     name: 'doc',

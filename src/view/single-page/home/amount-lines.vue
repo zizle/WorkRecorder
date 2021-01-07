@@ -52,7 +52,7 @@ export default {
               color: item.area_color
             }
             },
-            data: item.series_data.map(d => { return (d.month, d.count) })
+            data: item.series_data.map(d => { return [d.month, d.count] })
           }
         )
         legend.push(item.series_name)

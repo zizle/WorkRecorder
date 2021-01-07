@@ -24,7 +24,11 @@
         <div>错误排查：系统只会读取比当前已存在的数据日期大的数据行。例如：当前<span style="color:#fb700d">系统记录截止2020.12.01，上传只读2020.12.02及之后日期的记录。</span></div>
       </Row>
     </Card>
-    <Row class="margin-top-10">
+    <br>
+    <Row v-if="uploadJoinTime" style="margin-bottom: 3px" type="flex" justify="end">
+      <Button size="small" type="error" @click="delCurrentUpload" :loading="newAllDelLoading">全部删除</Button>
+    </Row>
+    <Row>
       <List :header="dataShowStatus" border size="large" item-layout="vertical">
         <ListItem v-for="item in newMsgList" :key="item.id">
           <h3>{{item.create_time}}</h3>
@@ -38,7 +42,7 @@
   </div>
 </template>
 <script>
-import { uploadExcel, delMessageRecord } from '@/api/short-message'
+import { uploadExcel, delMessageRecord, delMsgWithJoinTime } from '@/api/short-message'
 import { mapState } from 'vuex'
 export default {
   name: 'upload-excel',
@@ -46,9 +50,11 @@ export default {
     return {
       uploadServer: '',
       uploadWithData: {},
+      uploadJoinTime: 0,
       dataShowStatus: '*暂无上传数据',
       newMsgList: [],
-      delBtnLoading: false
+      delBtnLoading: false,
+      newAllDelLoading: false
     }
   },
   computed: {
@@ -81,6 +87,7 @@ export default {
         )
         // 数据显示到列表中
         this.newMsgList = data.messages
+        this.uploadJoinTime = data.join_time // 将本次上传的时间赋值
       }).catch(err => {
         this.$Modal.error({
           title: '错误',
@@ -116,6 +123,35 @@ export default {
             })
           }
         })
+      }
+    },
+    // 删除所有当前上传
+    delCurrentUpload () {
+      if (this.uploadJoinTime > 0) {
+        this.$Modal.confirm({
+          title: '警告',
+          content: '确认删除本次所有上传的数据条目吗？本次操作不可恢复!',
+          closeable: true,
+          onOk: () => {
+            this.newAllDelLoading = true
+            // 根据时间批量删除
+            const reqData = {
+              user_token: this.userToken,
+              join_time: this.uploadJoinTime
+            }
+            delMsgWithJoinTime(reqData).then(res => {
+              const data = res.data
+              this.newMsgList = []
+              this.dataShowStatus = '*暂无上传数据'
+              this.$Message.success(data.message)
+              this.newAllDelLoading = false
+            }).catch(() => {
+              this.$Message.error('删除失败了!')
+            })
+          }
+        })
+      } else {
+        this.$Message.error('您还没上传短讯通数据!')
       }
     }
   },

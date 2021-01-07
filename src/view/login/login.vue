@@ -5,6 +5,7 @@
 <template>
   <div class="login">
     <div class="login-con">
+      <h3 style="color: #F0F0F0">工作管理系统2.0</h3>
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
           <login-form @on-success-valid="handleSubmit"></login-form>
