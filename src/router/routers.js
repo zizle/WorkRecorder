@@ -184,6 +184,12 @@ export default [
           icon: 'md-create'
         },
         component: () => import('@/view/strategy/strategy-add.vue')
+      },
+      {
+        path: '/my-strategy',
+        name: 'my_strategy',
+        meta: { title: '我的投顾策略', icon: 'logo-buffer' },
+        component: () => import('@/view/strategy/strategy-my.vue')
       }
     ]
   },
