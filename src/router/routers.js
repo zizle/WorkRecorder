@@ -190,6 +190,12 @@ export default [
         name: 'my_strategy',
         meta: { title: '我的投顾策略', icon: 'logo-buffer' },
         component: () => import('@/view/strategy/strategy-my.vue')
+      },
+      {
+        path: '/statistics-strategy',
+        name: 'statistics_strategy',
+        meta: { title: '投顾策略数据统计', icon: 'logo-buffer' },
+        component: () => import('@/view/strategy/strategy-statistics.vue')
       }
     ]
   },
