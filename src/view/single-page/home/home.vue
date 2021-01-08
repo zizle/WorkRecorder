@@ -14,9 +14,9 @@
       </Col>
       <Col span="4" style="height:120px">
         <infor-card shadow color="#19be6b" icon="md-locate" :icon-size="36">
-          <count-to :end="0" count-class="count-style"/>
+          <count-to :end="strategyCount" count-class="count-style"/>
           <p>投顾策略</p>
-          <p>占比:-%</p>
+          <p>占比:{{ strategyPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px">
@@ -64,6 +64,7 @@ import CountTo from '_c/count-to'
 import AmountLines from './amount-lines.vue'
 import { mapState } from 'vuex'
 import { getShortMsgYearTotal } from '@/api/short-message'
+import { getStrategyYearTotal } from '@/api/strategy'
 export default {
   name: 'home',
   components: {
@@ -79,7 +80,10 @@ export default {
   data () {
     return {
       msgCount: 0,
-      msgPercent: 0
+      msgPercent: 0,
+
+      strategyCount: 0,
+      strategyPercent: 0
       // inforCardData: [],
       // pieData: [
       //   { value: 803, name: '短讯通' },
@@ -102,6 +106,7 @@ export default {
   },
   mounted () {
     this.getCurYearMsg() // 获取用户短信通的当年累计
+    this.getCurYearStrategy() //  获取用户投顾策略的当年累计
   },
   methods: {
     getCurYearMsg () {
@@ -109,6 +114,14 @@ export default {
         const data = res.data
         this.msgCount = data.total_count
         this.msgPercent = data.percent
+      })
+    },
+
+    getCurYearStrategy () {
+      getStrategyYearTotal(this.userToken).then(res => {
+        const data = res.data
+        this.strategyCount = data.total_count
+        this.strategyPercent = data.percent
       })
     }
   }

@@ -438,6 +438,7 @@ export default {
         return 'table-no-color-row'
       }
     },
+
     fixedRowHeight () {
       return 'fixed-row-height'
     }

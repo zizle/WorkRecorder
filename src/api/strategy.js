@@ -16,6 +16,14 @@ export const queryStrategy = (data) => {
   })
 }
 
+export const modifyOneStrategy = (data) => {
+  return axios.request({
+    url: 'api/strategy/modify/' + data.strategy_id + '/',
+    data,
+    method: 'put'
+  })
+}
+
 export const deleteOneStrategy = (straId, userToken) => {
   return axios.request({
     url: 'api/strategy/remove/' + straId + '/',
@@ -28,6 +36,23 @@ export const getMonthStrategyStatistics = (queryDate) => {
   return axios.request({
     url: 'api/strategy/statistics/month/',
     params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+export const getYearStrategyStatistics = (queryDate) => {
+  return axios.request({
+    url: 'api/strategy/statistics/year/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+// 用户获取自己当年的累计数
+export const getStrategyYearTotal = (userToken) => {
+  return axios.request({
+    url: 'api/strategy/statistics/year-total/',
+    params: { user_token: userToken },
     method: 'get'
   })
 }

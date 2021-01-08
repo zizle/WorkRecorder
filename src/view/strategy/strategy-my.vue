@@ -21,19 +21,20 @@
   <List :header="listHeaderText" border size="small" item-layout="vertical">
     <ListItem v-for="item in strategyList" :key="item.id">
       <Row :gutter="8" type="flex" justify="start" align="middle">
-        <Col span="3">创建日期：<span class="blue">{{item.create_time}}</span></Col>
+        <Col span="4">创建日期：<span class="blue">{{item.create_time}}</span></Col>
         <Col span="3">合约：<span class="blue">{{ item.contract_name }}</span></Col>
         <Col span="2">方向：<span class="blue">{{item.direction}}</span></Col>
         <Col span="2">手数：<span class="blue">{{item.hands}}</span></Col>
         <Col span="3">开仓：<span class="blue">{{item.open_price}}</span></Col>
         <Col span="3">平仓：<span class="blue">{{item.close_price}}</span></Col>
-        <Col span="2">盈亏：<span :class="item.profit>=0?'red':'green'">{{item.profit}}</span></Col>
+        <Col span="3">盈亏：<span :class="item.profit>=0?'red':'green'">{{item.profit}}</span></Col>
+        <Col span="3">收益率：<span :class="(item.profit/100000).toFixed(2)>0?'red':'green'">{{(item.profit / 100000).toFixed(2) * 100}}%</span></Col>
       </Row>
       <Row class="strategy-content">{{item.content}}</Row>
       <Row class="strategy-note" v-if="item.note">备注：{{item.note}}</Row>
       <Row type="flex" align="middle">
         <Col span="1"><div class="msg-author">{{ item.username }}</div></Col>
-        <Col span="1"><div :class="item.is_running? 'stra-status-runing':'stra-status'">{{ item.is_running? '运行中':'已结束' }}</div></Col>
+        <Col span="1" push="1"><div :class="item.is_running? 'stra-status-runing':'stra-status'">{{ item.is_running? '运行中':'已结束' }}</div></Col>
         <Col span="22">
           <div class="slotAction">
             <ul>
@@ -48,11 +49,34 @@
   <Row style="text-align: right">
     <Page  :total="totalCount" :page-size="pageSize" @on-change="pageChange" show-total />
   </Row>
+<!--    编辑策略-->
+  <Modal v-model="showEditModal" title="编辑投顾策略" :loading="modalEditLoading" @on-ok="confirmEditStrategy">
+    <Form ref="modifyForm" :label-width="80" :model="editFormData">
+      <FormItem label="策略开仓" prop="open_price">
+        <Input type="number" placeholder="开仓时的价格" v-model="editFormData.open_price"></Input>
+      </FormItem>
+      <FormItem label="策略平仓" prop="close_price">
+        <Input type="number" placeholder="平仓时的价格" v-model="editFormData.close_price"></Input>
+      </FormItem>
+      <FormItem label="结果收益" prop="profit">
+        <Input type="number" placeholder="用`+`和`-`表示盈亏" v-model="editFormData.profit"></Input>
+      </FormItem>
+      <FormItem label="状态">
+        <RadioGroup v-model="editFormData.is_running">
+          <Radio :label=1>运行中</Radio>
+          <Radio :label=0>已结束</Radio>
+        </RadioGroup>
+      </FormItem>
+      <FormItem label="备注">
+        <Input type="text" placeholder="备注" v-model="editFormData.note"></Input>
+      </FormItem>
+    </Form>
+  </Modal>
 </div>
 </template>
 
 <script>
-import { queryStrategy, deleteOneStrategy } from '@/api/strategy'
+import { queryStrategy, modifyOneStrategy, deleteOneStrategy } from '@/api/strategy'
 import { formatDate } from '@/libs/util'
 import { mapState } from 'vuex'
 export default {
@@ -108,7 +132,19 @@ export default {
       pageSize: 30,
       searchKeyWord: '',
 
-      currentStraIndexOf: -1
+      currentStraIndexOf: -1,
+
+      showEditModal: false,
+      modalEditLoading: false,
+
+      editFormData: {
+        strategyId: -1,
+        open_price: 0,
+        close_price: 0,
+        profit: 0,
+        is_running: 0,
+        note: ''
+      }
     }
   },
   computed: {
@@ -167,10 +203,50 @@ export default {
     },
 
     handleEditStrategy (straId) {
-      this.$Modal.info({
-        title: '信息',
-        content: '编辑功能暂未上线!'
+      this.setCurStrategyIndexOf(straId)
+      if (this.currentStraIndexOf !== -1) {
+        // 检测策略的状态
+        const straItem = this.strategyList[this.currentStraIndexOf]
+        if (!straItem.is_running) {
+          this.$Modal.error({ title: '错误', content: '已结束的策略不能再进行编辑了!' })
+          return
+        }
+        // 赋值,显示编辑框
+        this.editFormData.strategyId = straItem.id
+        this.editFormData.open_price = straItem.open_price
+        this.editFormData.close_price = straItem.close_price
+        this.editFormData.profit = straItem.profit
+        this.editFormData.is_running = straItem.is_running
+        this.editFormData.note = straItem.note
+        this.showEditModal = true
+      }
+    },
+
+    // 确认修改投顾策略的内容
+    confirmEditStrategy () {
+      const reqData = {
+        user_token: this.userToken,
+        strategy_id: this.editFormData.strategyId,
+        open_price: this.editFormData.open_price,
+        close_price: this.editFormData.close_price,
+        profit: this.editFormData.profit,
+        is_running: this.editFormData.is_running,
+        note: this.editFormData.note
+      }
+      this.modalEditLoading = true
+      modifyOneStrategy(reqData).then(res => {
+        // 刷新数据
+        this.getCurrentStrategy()
+        this.modalEditLoading = false
+        this.showEditModal = false
+        this.resetModalEdit()
+      }).catch(err => {
+        console.log(err)
       })
+    },
+
+    resetModalEdit () {
+      this.$refs['modifyForm'].resetFields()
     },
 
     handleDelStrategy (straId) {
@@ -212,7 +288,6 @@ export default {
         }
       })
     }
-
   }
 }
 </script>
@@ -242,12 +317,12 @@ export default {
   .slotAction ul li:not(:last-child):after{content:''; margin-left:12px;border: 1px solid #dddddd}
   .slotAction ul li:last-child{}
   .msg-author{
-    width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;font-size: 12px;
+    width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;font-size:12px;
   }
   .stra-status{
-    width:45px;text-align:center;background-color:#999999;color:#ffffff;border-radius:3px;font-size: 12px;
+    width:45px;text-align:center;background-color:#999999;color:#ffffff;border-radius:3px;font-size:8px;
   }
   .stra-status-runing{
-    width:45px;text-align:center;color:#ffffff;border-radius:3px;font-size: 12px;background-color:#cc4014;
+    width:45px;text-align:center;color:#ffffff;border-radius:3px;font-size:8px;background-color:#cc4014;
   }
 </style>
