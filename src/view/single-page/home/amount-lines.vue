@@ -29,7 +29,7 @@ export default {
       const cDate = new Date()
       const y = cDate.getFullYear()
       for (let i = 1; i <= 12; i += 1) {
-        const s = y + '-' + (Array(2).join('0') + i).slice(-2)
+        const s = (y - 1) + '-' + (Array(2).join('0') + i).slice(-2)
         xAxis.push(s)
       }
       return xAxis
@@ -47,11 +47,10 @@ export default {
           {
             name: item.series_name,
             type: 'line',
-            stack: '总量',
-            areaStyle: { normal: {
-              color: item.area_color
-            }
-            },
+            // areaStyle: { normal: {
+            //     color: item.area_color
+            //   }
+            // },
             data: item.series_data.map(d => { return [d.month, d.count] })
           }
         )
