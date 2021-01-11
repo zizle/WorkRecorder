@@ -169,7 +169,6 @@ export default [
       }
     ]
   },
-
   {
     path: '',
     name: 'strategy',
@@ -180,7 +179,7 @@ export default [
         path: '/add-strategy',
         name: 'strategy-add',
         meta: {
-          title: '手动添加记录',
+          title: '手动添加策略',
           icon: 'md-create'
         },
         component: () => import('@/view/strategy/strategy-add.vue')
@@ -199,6 +198,24 @@ export default [
       }
     ]
   },
+  {
+    path: '',
+    name: 'investment',
+    meta: { title: '投资方案', showAlways: true, icon: 'md-locate' },
+    component: Main,
+    children: [
+      {
+        path: '/add-investment',
+        name: 'investment-add',
+        meta: {
+          title: '手动添加方案',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/investment/investment-add.vue')
+      }
+    ]
+  },
+
   {
     path: '',
     name: 'help',
