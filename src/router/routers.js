@@ -179,7 +179,7 @@ export default [
         path: '/add-strategy',
         name: 'strategy-add',
         meta: {
-          title: '手动添加策略',
+          title: '添加策略记录',
           icon: 'md-create'
         },
         component: () => import('@/view/strategy/strategy-add.vue')
@@ -193,7 +193,7 @@ export default [
       {
         path: '/statistics-strategy',
         name: 'statistics_strategy',
-        meta: { title: '投顾策略数据统计', icon: 'logo-buffer' },
+        meta: { title: '投顾策略数据统计', icon: 'md-calculator' },
         component: () => import('@/view/strategy/strategy-statistics.vue')
       }
     ]
@@ -201,21 +201,38 @@ export default [
   {
     path: '',
     name: 'investment',
-    meta: { title: '投资方案', showAlways: true, icon: 'md-locate' },
+    meta: { title: '投资方案', showAlways: true, icon: 'md-book' },
     component: Main,
     children: [
       {
         path: '/add-investment',
         name: 'investment-add',
         meta: {
-          title: '手动添加方案',
+          title: '添加方案记录',
           icon: 'md-create'
         },
         component: () => import('@/view/investment/investment-add.vue')
+      },
+      {
+        path: '/my-investment',
+        name: 'investment-my',
+        meta: {
+          title: '我的投资方案',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/investment/investment-my.vue')
+      },
+      {
+        path: '/statistics-investment',
+        name: 'statistics_investment',
+        meta: {
+          title: '投资方案数据统计',
+          icon: 'md-calculator'
+        },
+        component: () => import('@/view/investment/investment-statistics.vue')
       }
     ]
   },
-
   {
     path: '',
     name: 'help',

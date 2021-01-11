@@ -199,6 +199,7 @@ export default {
     },
 
     handleQueryStrategy () {
+      this.currentPage = 1
       this.getCurrentStrategy()
     },
 
