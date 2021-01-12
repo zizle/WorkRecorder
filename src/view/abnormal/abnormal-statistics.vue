@@ -48,7 +48,7 @@
           <Col><Button size="small" @click="swapToNextYear">下一年</Button></Col>
         </Row>
         <Row style="height:40px" :gutter="8" type="flex" justify="start" align="middle" >
-          <Col span="12">投顾方案年统计表</Col>
+          <Col span="12">非常态工作年统计表</Col>
         </Row>
         <Row>
           <Table
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { getMonthInvestmentStatistics, getYearInvestmentStatistics } from '@/api/investment'
+import { getMonthAbnormalStatistics, getYearAbnormalStatistics } from '@/api/abnormal'
 import { formatDate } from '@/libs/util'
 export default {
   name: 'investment-statistics',
@@ -86,56 +86,14 @@ export default {
           align: 'center'
         },
         {
-          title: '策略数量',
+          title: '数量',
           key: 'total_count',
           align: 'center',
           sortable: true,
           sortType: 'desc'
         },
         {
-          title: '策略成功数',
-          key: 'success_count',
-          align: 'center',
-          sortable: true
-        },
-        {
-          title: '成功率',
-          key: 'success_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.success_rate * 100).toFixed(0) + '%')
-          }
-        },
-        {
-          title: '累计收益额',
-          key: 'sum_profit',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, params.row.sum_profit.toLocaleString())
-          }
-        },
-        {
-          title: '累计收益率',
-          key: 'sum_profit_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.sum_profit_rate * 100).toFixed(2) + '%')
-          }
-        },
-        {
-          title: '平均收益率',
-          key: 'avg_profit_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.avg_profit_rate * 100).toFixed(2) + '%')
-          }
-        },
-        {
-          title: '累计得分',
+          title: '评级总分',
           key: 'sum_score',
           align: 'center',
           sortable: true
@@ -151,56 +109,14 @@ export default {
           align: 'center'
         },
         {
-          title: '策略数量',
+          title: '数量',
           key: 'total_count',
           align: 'center',
           sortable: true,
           sortType: 'desc'
         },
         {
-          title: '策略成功数',
-          key: 'success_count',
-          align: 'center',
-          sortable: true
-        },
-        {
-          title: '成功率',
-          key: 'success_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.success_rate * 100).toFixed(0) + '%')
-          }
-        },
-        {
-          title: '年累计收益额',
-          key: 'sum_profit',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, params.row.sum_profit.toLocaleString())
-          }
-        },
-        {
-          title: '年累计收益率',
-          key: 'sum_profit_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.sum_profit_rate * 100).toFixed(2) + '%')
-          }
-        },
-        {
-          title: '平均收益率',
-          key: 'avg_profit_rate',
-          align: 'center',
-          sortable: true,
-          render: (h, params) => {
-            return h('div', {}, (params.row.avg_profit_rate * 100).toFixed(2) + '%')
-          }
-        },
-        {
-          title: '累计得分',
+          title: '评级总分',
           key: 'sum_score',
           align: 'center',
           sortable: true
@@ -232,30 +148,27 @@ export default {
 
   methods: {
     getCurrentMonthStatistics () {
-      getMonthInvestmentStatistics(formatDate(this.currentMonth)).then(res => {
+      getMonthAbnormalStatistics(formatDate(this.currentMonth)).then(res => {
         const data = res.data
         this.monthStatisticsData = data.statistics
         this.monthDataLoading = false
       }).catch(() => {
-        console.log('获取月统计失败')
+        this.$Message.error('获取月统计失败')
       })
     },
 
     getCurrentYearStatistics () {
-      getYearInvestmentStatistics(formatDate(this.currentYear)).then(res => {
+      getYearAbnormalStatistics(formatDate(this.currentYear)).then(res => {
         const data = res.data
         this.yearStatisticsData = data.statistics
         this.yearDataLoading = false
       }).catch(() => {
-        console.log('获取年统计失败')
+        this.$Message.error('获取年统计失败')
       })
     },
 
     tabClicked (name) {
       this.currentTabName = name
-      if (this.currentTabName === 'annual' && this.firstClickedTab) {
-        this.getCurrentYearStatistics()
-      }
     },
 
     monthSelected (dateStr) {
@@ -319,6 +232,7 @@ export default {
     fixedTableRowHeight () {
       return 'fixed-row-height'
     }
+
   }
 }
 </script>

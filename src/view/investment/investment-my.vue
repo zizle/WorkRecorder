@@ -319,7 +319,7 @@ export default {
   .ivu-table {
     color:#222222;
   }
-  .ivu-table .fixed-row-height .td{
+  .ivu-table .fixed-row-height td{
     height: 30px;
   }
   .detail-modal{
