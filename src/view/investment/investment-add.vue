@@ -47,14 +47,21 @@
           <Radio :label=0>否</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label="方案评级" prop="level">
-        <Select filterable clearable v-model="formData.level">
-          <Option :value=5>五级</Option>
-          <Option :value=4>四级</Option>
-          <Option :value=3>三级</Option>
-          <Option :value=2>二级</Option>
-          <Option :value=1>一级</Option>
-        </Select>
+      <FormItem label="评级得分" prop="level">
+        <RadioGroup v-model="formData.level">
+          <Radio :label=5>5</Radio>
+          <Radio :label=4>4</Radio>
+          <Radio :label=3>3</Radio>
+          <Radio :label=2>2</Radio>
+          <Radio :label=1>1</Radio>
+        </RadioGroup>
+<!--        <Select filterable clearable v-model="formData.level">-->
+<!--          <Option :value=5>五</Option>-->
+<!--          <Option :value=4>四</Option>-->
+<!--          <Option :value=3>三</Option>-->
+<!--          <Option :value=2>二</Option>-->
+<!--          <Option :value=1>一</Option>-->
+<!--        </Select>-->
       </FormItem>
       <FormItem label="状态">
         <RadioGroup v-model="formData.is_running">

@@ -31,3 +31,28 @@ export const deleteOneInvestment = (investmentId, userToken) => {
     method: 'delete'
   })
 }
+
+export const getMonthInvestmentStatistics = (queryDate) => {
+  return axios.request({
+    url: 'api/investment/statistics/month/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+export const getYearInvestmentStatistics = (queryDate) => {
+  return axios.request({
+    url: 'api/investment/statistics/year/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+// 用户获取自己当年的累计数
+export const getInvestmentYearTotal = (userToken) => {
+  return axios.request({
+    url: 'api/investment/statistics/year-total/',
+    params: { user_token: userToken },
+    method: 'get'
+  })
+}

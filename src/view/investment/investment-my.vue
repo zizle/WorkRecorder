@@ -56,7 +56,7 @@
         </Row>
         <br>
         <Row>
-          <Col span="8">评级:</Col>
+          <Col span="8">评级得分:</Col>
           <Col>{{ currentRowData.score }}</Col>
         </Row>
         <br>
