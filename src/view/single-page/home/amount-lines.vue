@@ -51,6 +51,7 @@ export default {
             //     color: item.area_color
             //   }
             // },
+            lineStyle: { color: item.area_color },
             data: item.series_data.map(d => { return [d.month, d.count] })
           }
         )
@@ -58,14 +59,10 @@ export default {
       })
 
       options = {
-
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
+            type: 'cross'
           }
         },
         grid: {

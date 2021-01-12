@@ -235,6 +235,41 @@ export default [
   },
   {
     path: '',
+    name: 'abnormal',
+    meta: { title: '非常规工作', showAlways: true, icon: 'md-bookmark' },
+    component: Main,
+    children: [
+      {
+        path: '/add-abnormal',
+        name: 'add_abnormal',
+        meta: {
+          title: '添加工作记录',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/abnormal/abnormal-add.vue')
+      },
+      {
+        path: '/my-abnormal',
+        name: 'my_abnormal',
+        meta: {
+          title: '我的非常态工作',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/abnormal/abnormal-my.vue')
+      },
+      {
+        path: '/statistics-abnormal',
+        name: 'statistics_abnormal',
+        meta: {
+          title: '非常态工作数据统计',
+          icon: 'md-calculator'
+        },
+        component: () => import('@/view/abnormal/abnormal-statistics.vue')
+      }
+    ]
+  },
+  {
+    path: '',
     name: 'help',
     meta: {
       title: '使用手册'
