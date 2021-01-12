@@ -42,12 +42,11 @@
       </Col>
       <Col span="4" style="height:120px">
         <infor-card shadow color="#9A66E4" icon="md-map" :icon-size="36">
-          <count-to :end="0" count-class="count-style"/>
+          <count-to :end="articleCount" count-class="count-style"/>
           <p>热点文章</p>
-          <p>占比:-%</p>
+          <p>占比:{{ articlePercent }}%</p>
         </infor-card>
       </Col>
-
     </Row>
     <br>
     <Row>
@@ -67,6 +66,7 @@ import { getShortMsgYearTotal } from '@/api/short-message'
 import { getStrategyYearTotal } from '@/api/strategy'
 import { getInvestmentYearTotal } from '@/api/investment'
 import { getAbnormalYearTotal } from '@/api/abnormal'
+import { getArticleYearTotal } from '@/api/hot-article'
 export default {
   name: 'home',
   components: {
@@ -91,7 +91,10 @@ export default {
       investmentPercent: 0,
 
       abnormalCount: 0,
-      abnormalPercent: 0
+      abnormalPercent: 0,
+
+      articleCount: 0,
+      articlePercent: 0
 
     }
   },
@@ -100,6 +103,7 @@ export default {
     this.getCurYearStrategy() //  获取用户投顾策略的当年累计
     this.getCurYearInvestment() //  获取用户投资方案的当年累计
     this.getCurYearAbnormalWork() //  获取用户非常规工作当年累计
+    this.getCurYearArticleWork() //  获取用户热点文章当年累计
   },
   methods: {
     getCurYearMsg () {
@@ -131,6 +135,14 @@ export default {
         const data = res.data
         this.abnormalCount = data.total_count
         this.abnormalPercent = data.percent
+      })
+    },
+
+    getCurYearArticleWork () {
+      getArticleYearTotal(this.userToken).then(res => {
+        const data = res.data
+        this.articleCount = data.total_count
+        this.articlePercent = data.percent
       })
     }
   }

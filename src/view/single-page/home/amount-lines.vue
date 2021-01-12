@@ -43,18 +43,20 @@ export default {
       const legend = []
       const seriesData = res.data.data
       seriesData.forEach((item, index) => {
-        seriesLine.push(
-          {
-            name: item.series_name,
-            type: 'line',
-            // areaStyle: { normal: {
-            //     color: item.area_color
-            //   }
-            // },
-            lineStyle: { color: item.area_color },
-            data: item.series_data.map(d => { return [d.month, d.count] })
-          }
-        )
+        const lineObj = {
+          name: item.series_name,
+          type: 'line',
+          stack: '总量',
+          smooth: true,
+          areaStyle: { color: item.area_color },
+          itemStyle: { color: item.area_color },
+          lineStyle: { color: item.area_color },
+          data: item.series_data.map(d => { return [d.month, d.count] })
+        }
+        // if (item.series_name === '短讯通'){
+        //   lineObj['yAxisIndex'] = 1
+        // }
+        seriesLine.push(lineObj)
         legend.push(item.series_name)
       })
 
@@ -81,7 +83,9 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            position: 'left',
+            scale: true
           }
         ],
         series: seriesLine
