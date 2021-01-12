@@ -270,6 +270,42 @@ export default [
   },
   {
     path: '',
+    name: 'hot-article',
+    meta: { title: '热点文章', showAlways: true, icon: 'ios-paper' },
+    component: Main,
+    children: [
+      {
+        path: '/add-hotarticle',
+        name: 'add_hotarticle',
+        meta: {
+          title: '添加文章撰写记录',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/hot-article/hotarticle-add.vue')
+      },
+      {
+        path: '/my-hotarticle',
+        name: 'my_hotarticle',
+        meta: {
+          title: '我的热点文章',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/hot-article/hotarticle-my.vue')
+      },
+      {
+        path: '/statistics-hotarticle',
+        name: 'statistics_hotarticle',
+        meta: {
+          title: '热点文章数据统计',
+          icon: 'md-calculator'
+        },
+        component: () => import('@/view/hot-article/hotarticle-statistics.vue')
+      }
+    ]
+  },
+
+  {
+    path: '',
     name: 'help',
     meta: {
       title: '使用手册'
