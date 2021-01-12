@@ -1,7 +1,6 @@
 <template>
   <div>
     <Tabs v-model="currentTabName" type="card" @on-click="tabClicked">
-
       <TabPane label="月统计" name="monthly" style="min-height: 300px">
         <Row style="height:40px" :gutter="16" type="flex" justify="start" align="middle">
           <Col>当前月份：</Col>
@@ -9,7 +8,7 @@
             <DatePicker
               type="month"
               size="small"
-              style="width: 100px"
+              style="width:100px"
               placeholder="选择月份"
               :value="currentMonth"
               @on-change="monthSelected">
@@ -17,10 +16,6 @@
           </Col>
           <Col><Button size="small" @click="swapToPreMonth">上个月</Button></Col>
           <Col><Button size="small" @click="swapToNextMonth">下个月</Button></Col>
-        </Row>
-
-        <Row style="height:40px" :gutter="8" type="flex" justify="start" align="middle" >
-          <Col span="12">投顾策略月统计表</Col>
         </Row>
         <Row>
           <Table
@@ -36,7 +31,7 @@
         </Row>
       </TabPane>
 
-      <TabPane label="年统计" name="annual">
+      <TabPane label="年统计" name="annual" style="min-height: 300px">
         <Row style="height:40px" :gutter="16" type="flex" justify="start" align="middle">
           <Col>当前年份：</Col>
           <Col>
@@ -53,7 +48,7 @@
           <Col><Button size="small" @click="swapToNextYear">下一年</Button></Col>
         </Row>
         <Row style="height:40px" :gutter="8" type="flex" justify="start" align="middle" >
-          <Col span="12">投顾策略年统计表</Col>
+          <Col span="12">投顾方案年统计表</Col>
         </Row>
         <Row>
           <Table
@@ -73,14 +68,17 @@
 </template>
 
 <script>
-import { getMonthStrategyStatistics, getYearStrategyStatistics } from '@/api/strategy'
+import { getMonthInvestmentStatistics, getYearInvestmentStatistics } from '@/api/investment'
 import { formatDate } from '@/libs/util'
 export default {
-  name: 'strategy-statistics',
+  name: 'investment-statistics',
   data () {
     return {
+      currentTabName: 'monthly',
       currentMonth: new Date(),
+      currentYear: new Date(),
 
+      monthDataLoading: true,
       monthStatisticsColumns: [
         {
           title: '姓名',
@@ -135,13 +133,17 @@ export default {
           render: (h, params) => {
             return h('div', {}, (params.row.avg_profit_rate * 100).toFixed(2) + '%')
           }
+        },
+        {
+          title: '累计得分',
+          key: 'sum_score',
+          align: 'center',
+          sortable: true
         }
       ],
       monthStatisticsData: [],
-      monthDataLoading: false,
 
-      currentYear: new Date(),
-
+      yearDataLoading: true,
       yearStatisticsColumns: [
         {
           title: '姓名',
@@ -196,13 +198,15 @@ export default {
           render: (h, params) => {
             return h('div', {}, (params.row.avg_profit_rate * 100).toFixed(2) + '%')
           }
+        },
+        {
+          title: '累计得分',
+          key: 'sum_score',
+          align: 'center',
+          sortable: true
         }
       ],
-      yearStatisticsData: [],
-      yearDataLoading: false,
-
-      firstClickedTab: true,
-      currentTabName: 'monthly'
+      yearStatisticsData: []
     }
   },
   mounted () {
@@ -216,6 +220,7 @@ export default {
     currentYear.setDate(1)
     this.currentYear = currentYear
   },
+
   watch: {
     currentMonth () {
       this.getCurrentMonthStatistics()
@@ -224,9 +229,32 @@ export default {
       this.getCurrentYearStatistics()
     }
   },
+
   methods: {
-    tabClicked (tabName) {
-      this.currentTabName = tabName
+    getCurrentMonthStatistics () {
+      getMonthInvestmentStatistics(formatDate(this.currentMonth)).then(res => {
+        console.log(res)
+        const data = res.data
+        this.monthStatisticsData = data.statistics
+        this.monthDataLoading = false
+      }).catch(() => {
+        console.log('获取月统计失败')
+      })
+    },
+
+    getCurrentYearStatistics () {
+      getYearInvestmentStatistics(formatDate(this.currentYear)).then(res => {
+        console.log(res)
+        const data = res.data
+        this.yearStatisticsData = data.statistics
+        this.yearDataLoading = false
+      }).catch(() => {
+        console.log('获取年统计失败')
+      })
+    },
+
+    tabClicked (name) {
+      this.currentTabName = name
       if (this.currentTabName === 'annual' && this.firstClickedTab) {
         this.getCurrentYearStatistics()
       }
@@ -290,26 +318,6 @@ export default {
       this.currentYear = d
     },
 
-    getCurrentMonthStatistics () {
-      this.monthDataLoading = true
-      getMonthStrategyStatistics(formatDate(this.currentMonth)).then(res => {
-        const data = res.data
-        this.monthStatisticsData = data.statistics
-        this.monthDataLoading = false
-      }).catch(() => {
-
-      })
-    },
-
-    getCurrentYearStatistics () {
-      this.yearDataLoading = true
-      getYearStrategyStatistics(formatDate(this.currentYear)).then(res => {
-        const data = res.data
-        this.yearStatisticsData = data.statistics
-        this.yearDataLoading = false
-      })
-    },
-
     fixedTableRowHeight () {
       return 'fixed-row-height'
     }
@@ -317,11 +325,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .ivu-table {
     color:#222222;
   }
-  .ivu-table .fixed-row-height td{
+  .fixed-row-height td{
     height: 30px;
   }
 </style>
