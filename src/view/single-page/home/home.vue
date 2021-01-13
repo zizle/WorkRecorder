@@ -4,9 +4,9 @@
 <!--      <Col class="sys-title">欢迎使用工作数据管理系统2.0</Col>-->
 <!--    </Row>-->
 <!--    <br>-->
-    <Row :gutter="20">
+    <Row :gutter="16">
       <Col span="4" style="height:120px">
-        <infor-card shadow color="#2d8cf0" icon="md-person-add" :icon-size="36">
+        <infor-card shadow color="#2d8cf0" icon="md-text" :icon-size="36">
           <count-to :end="msgCount" count-class="count-style"/>
           <p>短讯通</p>
           <p>占比:{{msgPercent}}%</p>
@@ -20,31 +20,42 @@
         </infor-card>
       </Col>
       <Col span="4" style="height:120px">
-        <infor-card shadow color="#ff9900" icon="md-help-circle" :icon-size="36">
+        <infor-card shadow color="#ff9900" icon="md-book" :icon-size="36">
           <count-to :end="investmentCount" count-class="count-style"/>
           <p>投资方案</p>
           <p>占比:{{ investmentPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px">
-        <infor-card shadow color="#ed3f14" icon="md-share" :icon-size="36">
+        <infor-card shadow color="#ed3f14" icon="md-bookmark" :icon-size="36">
           <count-to :end="abnormalCount" count-class="count-style"/>
           <p>非常态工作</p>
           <p>占比:{{ abnormalPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px">
-        <infor-card shadow color="#E46CBB" icon="md-chatbubbles" :icon-size="36">
+        <infor-card shadow color="#E46CBB" icon="ios-disc" :icon-size="36">
           <count-to :end="0" count-class="count-style"/>
           <p>收入指标</p>
           <p>占比:-%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px">
-        <infor-card shadow color="#9A66E4" icon="md-map" :icon-size="36">
+        <infor-card shadow color="#9A66E4" icon="ios-paper" :icon-size="36">
           <count-to :end="articleCount" count-class="count-style"/>
           <p>热点文章</p>
           <p>占比:{{ articlePercent }}%</p>
+        </infor-card>
+      </Col>
+    </Row>
+
+    <Row :gutter="16" v-if="ondutyMsgCount!==0">
+      <br>
+      <Col span="4" style="height:120px">
+        <infor-card shadow color="#bf9000" icon="ios-chatbubbles" :icon-size="36">
+          <count-to :end="ondutyMsgCount" count-class="count-style"/>
+          <p>值班信息</p>
+          <p>占比:{{ ondutyMsgPercent }}%</p>
         </infor-card>
       </Col>
     </Row>
@@ -67,6 +78,7 @@ import { getStrategyYearTotal } from '@/api/strategy'
 import { getInvestmentYearTotal } from '@/api/investment'
 import { getAbnormalYearTotal } from '@/api/abnormal'
 import { getArticleYearTotal } from '@/api/hot-article'
+import { getOndutyMsgYearTotal } from '@/api/onduty-message'
 export default {
   name: 'home',
   components: {
@@ -94,7 +106,10 @@ export default {
       abnormalPercent: 0,
 
       articleCount: 0,
-      articlePercent: 0
+      articlePercent: 0,
+
+      ondutyMsgCount: 0,
+      ondutyMsgPercent: 0
 
     }
   },
@@ -104,6 +119,7 @@ export default {
     this.getCurYearInvestment() //  获取用户投资方案的当年累计
     this.getCurYearAbnormalWork() //  获取用户非常规工作当年累计
     this.getCurYearArticleWork() //  获取用户热点文章当年累计
+    this.getCurYearOndutyMsgWork() //  获取用户值班信息当年累计
   },
   methods: {
     getCurYearMsg () {
@@ -143,6 +159,14 @@ export default {
         const data = res.data
         this.articleCount = data.total_count
         this.articlePercent = data.percent
+      })
+    },
+
+    getCurYearOndutyMsgWork () {
+      getOndutyMsgYearTotal(this.userToken).then(res => {
+        const data = res.data
+        this.ondutyMsgCount = data.total_count
+        this.ondutyMsgPercent = data.percent
       })
     }
   }

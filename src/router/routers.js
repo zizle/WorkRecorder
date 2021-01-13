@@ -124,7 +124,7 @@ export default [
         path: '/add-excel',
         name: 'msg-exceladd',
         meta: {
-          title: 'EXCEL上传',
+          title: 'EXCEL数据上传',
           icon: 'md-add'
         },
         component: () => import('@/view/short-message/shortmsg-excel.vue')
@@ -306,9 +306,54 @@ export default [
 
   {
     path: '',
+    name: 'ondty-message',
+    meta: { title: '值班信息', showAlways: true, icon: 'ios-chatbubbles' },
+    component: Main,
+    children: [
+      {
+        path: '/onduty-excel',
+        name: 'onduty_excel',
+        meta: {
+          title: 'EXCEL数据上传',
+          icon: 'md-add'
+        },
+        component: () => import('@/view/onduty-message/onduty-excel.vue')
+      },
+      {
+        path: '/onduty-add',
+        name: 'onduty_add',
+        meta: {
+          title: '手动添加记录',
+          icon: 'md-create'
+        },
+        component: () => import('@/view/onduty-message/onduty-add.vue')
+      },
+      {
+        path: '/oduty-my',
+        name: 'onduty_my',
+        meta: {
+          title: '我的值班信息',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/onduty-message/onduty-my.vue')
+      },
+      {
+        path: '/oduty-statistics',
+        name: 'onduty_statistics',
+        meta: {
+          title: '值班信息统计',
+          icon: 'md-calculator'
+        },
+        component: () => import('@/view/onduty-message/onduty-statistics.vue')
+      }
+    ]
+  },
+  {
+    path: '',
     name: 'help',
     meta: {
-      title: '使用手册'
+      title: '使用手册',
+      icon: 'ios-book'
     },
     component: Main,
     children: [
@@ -317,7 +362,7 @@ export default [
         name: 'helper',
         meta: {
           title: '使用手册',
-          icon: ''
+          icon: 'ios-book'
         },
         component: () => import('@/view/helper/helper.vue')
       }
