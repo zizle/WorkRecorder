@@ -5,61 +5,49 @@
 <!--    </Row>-->
 <!--    <br>-->
     <Row :gutter="16">
-      <Col span="4" style="height:120px">
+      <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#2d8cf0" icon="md-text" :icon-size="36">
           <count-to :end="msgCount" count-class="count-style"/>
           <p>短讯通</p>
           <p>占比:{{msgPercent}}%</p>
         </infor-card>
       </Col>
-      <Col span="4" style="height:120px">
+      <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#19be6b" icon="md-locate" :icon-size="36">
           <count-to :end="strategyCount" count-class="count-style"/>
           <p>投顾策略</p>
           <p>占比:{{ strategyPercent }}%</p>
         </infor-card>
       </Col>
-      <Col span="4" style="height:120px">
+      <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#ff9900" icon="md-book" :icon-size="36">
           <count-to :end="investmentCount" count-class="count-style"/>
           <p>投资方案</p>
           <p>占比:{{ investmentPercent }}%</p>
         </infor-card>
       </Col>
-      <Col span="4" style="height:120px">
+      <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#ed3f14" icon="md-bookmark" :icon-size="36">
           <count-to :end="abnormalCount" count-class="count-style"/>
           <p>非常态工作</p>
           <p>占比:{{ abnormalPercent }}%</p>
         </infor-card>
       </Col>
-      <Col span="4" style="height:120px">
-        <infor-card shadow color="#E46CBB" icon="ios-disc" :icon-size="36">
-          <count-to :end="0" count-class="count-style"/>
-          <p>收入指标</p>
-          <p>占比:-%</p>
-        </infor-card>
-      </Col>
-      <Col span="4" style="height:120px">
+      <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#9A66E4" icon="ios-paper" :icon-size="36">
           <count-to :end="articleCount" count-class="count-style"/>
           <p>热点文章</p>
           <p>占比:{{ articlePercent }}%</p>
         </infor-card>
       </Col>
-    </Row>
-
-    <Row :gutter="16" v-if="ondutyMsgCount!==0">
-      <br>
-      <Col span="4" style="height:120px">
-        <infor-card shadow color="#bf9000" icon="ios-chatbubbles" :icon-size="36">
+      <Col span="4" style="height:120px;margin-bottom:10px" v-if="ondutyMsgCount!==0">
+        <infor-card shadow color="#E46CBB" icon="ios-chatbubbles" :icon-size="36">
           <count-to :end="ondutyMsgCount" count-class="count-style"/>
           <p>值班信息</p>
           <p>占比:{{ ondutyMsgPercent }}%</p>
         </infor-card>
       </Col>
     </Row>
-    <br>
     <Row>
       <Card shadow>
         <AmountLines style="height:400px;"/>

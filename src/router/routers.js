@@ -303,7 +303,41 @@ export default [
       }
     ]
   },
-
+  {
+    path: '',
+    name: 'income-point',
+    meta: { title: '收入指标', showAlways: true, icon: 'ios-disc' },
+    component: Main,
+    children: [
+      {
+        path: '/income-add',
+        name: 'income_add',
+        meta: {
+          title: '客户指标添加',
+          icon: 'md-add'
+        },
+        component: () => import('@/view/income-point/income-add.vue')
+      },
+      {
+        path: '/income-my',
+        name: 'income_my',
+        meta: {
+          title: '客户权益记录',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/income-point/income-my.vue')
+      },
+      {
+        path: '/income-statistics',
+        name: 'income_statistics',
+        meta: {
+          title: '收入指标统计',
+          icon: 'md-calculator'
+        },
+        component: () => import('@/view/income-point/income-statistics.vue')
+      }
+    ]
+  },
   {
     path: '',
     name: 'ondty-message',
