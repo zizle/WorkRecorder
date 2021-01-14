@@ -17,6 +17,7 @@
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
+          <div><div style="margin-right: 5px;line-height:68px">欢迎您: <span style="color: #348EED">{{ userName }}</span></div></div>
         </header-bar>
       </Header>
       <Content class="main-content-con">
@@ -44,7 +45,7 @@ import ABackTop from './components/a-back-top'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
 import ErrorStore from './components/error-store'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapMutations, mapActions, mapGetters, mapState } from 'vuex'
 import { getNewTagList, routeEqual } from '@/libs/util'
 import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-min.jpg'
@@ -71,6 +72,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      userName: state => state.user.userName
+    }),
     ...mapGetters([
       'errorCount'
     ]),

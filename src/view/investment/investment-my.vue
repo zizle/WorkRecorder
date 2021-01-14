@@ -73,7 +73,7 @@
         <Row>
           <Col span="8">附件:</Col>
           <Col>
-            <div v-if="currentRowData.annex"><a :href="currentRowData.annex_url">{{currentRowData.annex}}</a></div>
+            <div v-if="currentRowData.annex"><a :href="currentRowData.annex_url" target="blank">{{currentRowData.annex}}</a></div>
             <div v-else>无</div>
           </Col>
         </Row>

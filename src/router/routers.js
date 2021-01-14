@@ -22,7 +22,7 @@ export default [
     path: '/login',
     name: 'login',
     meta: {
-      title: 'Login - 登录',
+      title: '登录',
       hideInMenu: true
     },
     component: () => import('@/view/login/login.vue')
@@ -193,7 +193,11 @@ export default [
       {
         path: '/statistics-strategy',
         name: 'statistics_strategy',
-        meta: { title: '投顾策略数据统计', icon: 'md-calculator' },
+        meta: {
+          title: '投顾策略数据统计',
+          icon: 'md-calculator',
+          access: ['admin']
+        },
         component: () => import('@/view/strategy/strategy-statistics.vue')
       }
     ]
@@ -227,7 +231,8 @@ export default [
         name: 'statistics_investment',
         meta: {
           title: '投资方案数据统计',
-          icon: 'md-calculator'
+          icon: 'md-calculator',
+          access: ['admin']
         },
         component: () => import('@/view/investment/investment-statistics.vue')
       }
@@ -262,7 +267,8 @@ export default [
         name: 'statistics_abnormal',
         meta: {
           title: '非常态工作数据统计',
-          icon: 'md-calculator'
+          icon: 'md-calculator',
+          access: ['admin']
         },
         component: () => import('@/view/abnormal/abnormal-statistics.vue')
       }
@@ -297,7 +303,8 @@ export default [
         name: 'statistics_hotarticle',
         meta: {
           title: '热点文章数据统计',
-          icon: 'md-calculator'
+          icon: 'md-calculator',
+          access: ['admin']
         },
         component: () => import('@/view/hot-article/hotarticle-statistics.vue')
       }
@@ -332,7 +339,8 @@ export default [
         name: 'income_statistics',
         meta: {
           title: '收入指标统计',
-          icon: 'md-calculator'
+          icon: 'md-calculator',
+          access: ['admin']
         },
         component: () => import('@/view/income-point/income-statistics.vue')
       }
@@ -376,7 +384,8 @@ export default [
         name: 'onduty_statistics',
         meta: {
           title: '值班信息统计',
-          icon: 'md-calculator'
+          icon: 'md-calculator',
+          access: ['admin']
         },
         component: () => import('@/view/onduty-message/onduty-statistics.vue')
       }
@@ -395,13 +404,35 @@ export default [
         path: '/helper',
         name: 'helper',
         meta: {
-          title: '使用手册',
+          title: '首页说明',
           icon: 'ios-book'
         },
         component: () => import('@/view/helper/helper.vue')
       }
     ]
+  },
+  {
+    path: '/',
+    name: '_avatar',
+    redirect: '/avatar',
+    meta: {
+      title: '头像设置',
+      hideInMenu: true
+    },
+    component: Main,
+    children: [
+      {
+        path: '/avatar',
+        name: 'avatar',
+        meta: {
+          title: '头像设置',
+          hideInMenu: true
+        },
+        component: () => import('@/view/user/user-avatar.vue')
+      }
+    ]
   }
+
   //
   // {
   //   path: '',

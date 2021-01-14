@@ -56,6 +56,14 @@ export const logout = (token) => {
   })
 }
 
+export const uploadAvatar = (data) => {
+  return axios.request({
+    url: 'api/user/avatar/',
+    data,
+    method: 'post'
+  })
+}
+
 export const getUnreadCount = () => {
   return axios.request({
     url: 'api/user/message/count',

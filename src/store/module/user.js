@@ -2,6 +2,7 @@ import {
   login,
   getUserList,
   getUserInfo,
+  uploadAvatar,
   getMessage,
   getContentByMsgId,
   hasRead,
@@ -129,6 +130,26 @@ export default {
         }
       })
     },
+    // 设置头像
+    uploadUserAvatar ({ state, commit }, { file }) {
+      return new Promise((resolve, reject) => {
+        try {
+          const formData = new FormData()
+          formData.append('avatar_file', file)
+          formData.append('user_token', state.token)
+          uploadAvatar(formData).then(res => {
+            const data = res.data
+            commit('setAvatar', data.avatar_url)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+
     // 获取系统中的所有用户
     getSystemUsers ({ state, commit }) {
       return new Promise((resolve, reject) => {

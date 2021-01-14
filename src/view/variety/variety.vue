@@ -66,7 +66,7 @@ export default {
     ...mapActions([
     ]),
     showVarieties () {
-      console.log(this.varietyList)
+      // console.log(this.varietyList)
     },
     changeTableRows () {
       let data = []

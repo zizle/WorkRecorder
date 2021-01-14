@@ -48,6 +48,7 @@ export default {
           type: 'line',
           stack: '总量',
           smooth: true,
+          connectNulls: true,
           areaStyle: { color: item.area_color },
           itemStyle: { color: item.area_color },
           lineStyle: { color: item.area_color },
