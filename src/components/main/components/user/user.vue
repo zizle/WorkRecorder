@@ -9,6 +9,7 @@
 <!--        <DropdownItem name="message">-->
 <!--          消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>-->
 <!--        </DropdownItem>-->
+        <DropdownItem name="setavatar">设置头像</DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -41,6 +42,11 @@ export default {
         })
       })
     },
+    setAvatar () {
+      this.$router.push({
+        name: 'avatar'
+      })
+    },
     message () {
       this.$router.push({
         name: 'message_page'
@@ -49,6 +55,8 @@ export default {
     handleClick (name) {
       switch (name) {
         case 'logout': this.logout()
+          break
+        case 'setavatar': this.setAvatar()
           break
         case 'message': this.message()
           break

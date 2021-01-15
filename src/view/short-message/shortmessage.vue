@@ -172,6 +172,6 @@ export default {
   .slotAction ul li:not(:last-child):after{content:''; margin-left:12px;border: 1px solid #dddddd}
   .slotAction ul li:last-child{}
   .msg-author{
-    width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;
+    width:45px;text-align:center;background-color:#b3cbf7;color:#ffffff;border-radius:3px;font-size:10px;
   }
 </style>

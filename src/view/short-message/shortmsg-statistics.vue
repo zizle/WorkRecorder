@@ -52,20 +52,20 @@
               </Table>
             </Col>
           </Row>
-          <Row style="height:40px" type="flex" justify="start" align="middle">
-            <Col>每日数量明细表</Col>
-          </Row>
-          <Row>
-            <Table
-              size="small"
-              highlight-row
-              border
-              :row-class-name="detailTableRowClass"
-              :columns="monthDetailColumns"
-              :data="monthDetailData"
-              :loading="monthDetailLoading">
-            </Table>
-          </Row>
+<!--          <Row style="height:40px" type="flex" justify="start" align="middle">-->
+<!--            <Col>每日数量明细表</Col>-->
+<!--          </Row>-->
+<!--          <Row>-->
+<!--            <Table-->
+<!--              size="small"-->
+<!--              highlight-row-->
+<!--              border-->
+<!--              :row-class-name="detailTableRowClass"-->
+<!--              :columns="monthDetailColumns"-->
+<!--              :data="monthDetailData"-->
+<!--              :loading="monthDetailLoading">-->
+<!--            </Table>-->
+<!--          </Row>-->
         </TabPane>
         <TabPane label="年统计" name="annual">
           <Row style="height:40px" :gutter="16" type="flex" justify="start" align="middle">
@@ -117,23 +117,23 @@
               </Table>
             </Col>
           </Row>
-          <Row style="height:40px" type="flex" justify="start" align="middle">
-            <Col>每月数量明细表</Col>
-          </Row>
-          <Row>
-            <Table
-              size="small"
-              highlight-row
-              stripe
-              border
-              show-summary
-              sum-text="合计"
-              :row-class-name="detailTableRowClass"
-              :columns="yearDetailColumns"
-              :data="yearDetailData"
-              :loading="yearDetailLoading">
-            </Table>
-          </Row>
+<!--          <Row style="height:40px" type="flex" justify="start" align="middle">-->
+<!--            <Col>每月数量明细表</Col>-->
+<!--          </Row>-->
+<!--          <Row>-->
+<!--            <Table-->
+<!--              size="small"-->
+<!--              highlight-row-->
+<!--              stripe-->
+<!--              border-->
+<!--              show-summary-->
+<!--              sum-text="合计"-->
+<!--              :row-class-name="detailTableRowClass"-->
+<!--              :columns="yearDetailColumns"-->
+<!--              :data="yearDetailData"-->
+<!--              :loading="yearDetailLoading">-->
+<!--            </Table>-->
+<!--          </Row>-->
         </TabPane>
       </Tabs>
     </template>
@@ -202,9 +202,9 @@ export default {
       ],
       monthQualityRankData: [],
       // 月明细
-      monthDetailColumns: [],
-      monthDetailLoading: true,
-      monthDetailData: [],
+      // monthDetailColumns: [],
+      // monthDetailLoading: true,
+      // monthDetailData: [],
       // 年排名数据
       yearRankLoading: true,
       // 年数量排名
@@ -250,11 +250,11 @@ export default {
           align: 'center'
         }
       ],
-      yearQualityRankData: [],
+      yearQualityRankData: []
       // 年明细
-      yearDetailColumns: [],
-      yearDetailLoading: true,
-      yearDetailData: []
+      // yearDetailColumns: [],
+      // yearDetailLoading: true,
+      // yearDetailData: []
     }
   },
   mounted () {
@@ -270,14 +270,14 @@ export default {
   },
   watch: {
     currentDate () {
-      this.getMonthDetailHeaders() // 生成本月详情数据表格的表头
+      // this.getMonthDetailHeaders() // 生成本月详情数据表格的表头
       this.getMonthRankData() // 获取月排名数据
-      this.getMonthDetailData() // 获取月明细数据
+      // this.getMonthDetailData() // 获取月明细数据
     },
     currentYear () {
-      this.getYearDetailHeaders()
+      // this.getYearDetailHeaders()
       this.getYearRankData()
-      this.getYearDetailData()
+      // this.getYearDetailData()
     }
   },
   methods: {
@@ -285,9 +285,9 @@ export default {
     tabClicked (tabName) {
       this.currentTabName = tabName
       if (this.currentTabName === 'annual' && this.firstClickedTab) {
-        this.getYearDetailHeaders()
+        // this.getYearDetailHeaders()
         this.getYearRankData()
-        this.getYearDetailData()
+        // this.getYearDetailData()
       }
     },
     // 获取月份的详情日期

@@ -150,7 +150,8 @@ export default {
         {
           title: '标题',
           key: 'title',
-          align: 'center'
+          align: 'center',
+          minWidth: 120
         },
         {
           title: '瑞币情况',

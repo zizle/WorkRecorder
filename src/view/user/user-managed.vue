@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Table stripe :columns="userTableColumns" :data="userList" :loading="tableOnLoading">
+    <Table border stripe size="small" :columns="userTableColumns" :data="userList" :loading="tableOnLoading">
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="info" size="small" style="margin-right: 5px" @click="handleUserAccess(row)">分配</Button>
+        <Button type="info" size="small" @click="handleUserAccess(row)">分配</Button>
       </template>
     </Table>
     <Modal v-model="isEditingUserAccess" :loading="auditLoading" :title="auditModalTitle" @on-ok="confirmUserAudit">
@@ -37,17 +37,16 @@ export default {
       userTableColumns: [
         {
           title: '用户名',
-          key: 'username'
+          key: 'username',
+          width: 80
         },
         {
           title: '加入时间',
-          key: 'join_time',
-          maxWidth: 100
+          key: 'join_time'
         },
         {
           title: '最近登录',
-          key: 'update_time',
-          maxWidth: 100
+          key: 'update_time'
         },
         {
           title: '手机号',
@@ -59,18 +58,19 @@ export default {
         },
         {
           title: '部门小组',
-          key: 'organization_name'
+          key: 'organization_name',
+          width: 110
         },
         {
           title: '权限分配',
           slot: 'action',
-          width: 150,
+          width: 100,
           align: 'center'
         },
         {
           title: '在职',
           key: 'is_active',
-          maxWidth: 80,
+          maxWidth: 70,
           render: (h, params) => {
             return h('div', [
               h('i-switch', {
