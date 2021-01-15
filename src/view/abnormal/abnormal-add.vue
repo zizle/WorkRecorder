@@ -39,15 +39,6 @@
       <FormItem label="合作者" prop="partner">
         <Input placeholder="记录一起合作完成的人,默认为`无`" type="text" v-model="formData.partner"></Input>
       </FormItem>
-      <FormItem label="评级得分" prop="score">
-        <RadioGroup v-model="formData.score">
-          <Radio :label=5>5</Radio>
-          <Radio :label=4>4</Radio>
-          <Radio :label=3>3</Radio>
-          <Radio :label=2>2</Radio>
-          <Radio :label=1>1</Radio>
-        </RadioGroup>
-      </FormItem>
       <FormItem label="备注" prop="note">
         <Input type="text" placeholder="备注" v-model="formData.note"></Input>
       </FormItem>
@@ -88,9 +79,6 @@ export default {
     const validateAllowance = (r, v, callback) => {
       if (v === '') { this.formData.allowance = 0 } else (callback())
     }
-    const validateScore = (r, v, callback) => {
-      if (v === '') { callback(new Error('评级得分为必选')) } else (callback())
-    }
     const validatePartner = (r, v, callback) => {
       if (v === '') { this.formData.partner = '无' } else (callback())
     }
@@ -107,13 +95,11 @@ export default {
         swiss_coin: '',
         allowance: '',
         partner: '',
-        score: '',
         note: ''
       },
       ruleForm: {
         title: [{ validator: validateTitle, trigger: 'blur' }],
         task_type: [{ validator: validateTaskType, trigger: 'blur' }],
-        score: [{ validator: validateScore, trigger: 'blur' }],
         allowance: [{ validator: validateAllowance, trigger: 'blur' }],
         partner: [{ validator: validatePartner, trigger: 'blur' }],
         swiss_coin: [{ validator: validateSwissCoin, trigger: 'blur' }]
@@ -151,7 +137,6 @@ export default {
             swiss_coin: this.formData.swiss_coin,
             allowance: this.formData.allowance,
             partner: this.formData.partner,
-            score: this.formData.score,
             note: this.formData.note
           }
 

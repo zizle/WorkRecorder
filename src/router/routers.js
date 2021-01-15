@@ -263,6 +263,15 @@ export default [
         component: () => import('@/view/abnormal/abnormal-my.vue')
       },
       {
+        path: '/audit-abnormal',
+        name: 'audit_abnormal',
+        meta: {
+          title: '管理非常态工作',
+          icon: 'md-hammer'
+        },
+        component: () => import('@/view/abnormal/abnormal-audit.vue')
+      },
+      {
         path: '/statistics-abnormal',
         name: 'statistics_abnormal',
         meta: {
@@ -329,7 +338,7 @@ export default [
         path: '/income-my',
         name: 'income_my',
         meta: {
-          title: '客户权益记录',
+          title: '我的客户权益',
           icon: 'logo-buffer'
         },
         component: () => import('@/view/income-point/income-my.vue')
