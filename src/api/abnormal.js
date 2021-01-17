@@ -24,6 +24,14 @@ export const modifyAbnormal = (formData, abnormalId) => {
   })
 }
 
+export const auditAbnormal = (data, abnormalId) => {
+  return axios.request({
+    url: 'api/abnormal/audit/' + abnormalId + '/',
+    data,
+    method: 'put'
+  })
+}
+
 export const deleteOneAbnormal = (abnormalId, userToken) => {
   return axios.request({
     url: 'api/abnormal/remove/' + abnormalId + '/',

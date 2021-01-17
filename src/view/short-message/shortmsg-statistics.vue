@@ -1,7 +1,7 @@
 <template>
   <div>
     <template>
-      <Tabs v-model="currentTabName" type="card" @on-click="tabClicked">
+      <Tabs v-model="currentTabName" @on-click="tabClicked">
         <TabPane label="月统计" name="monthly">
           <Row style="height:40px" :gutter="16" type="flex" justify="start" align="middle">
             <Col>当前月份：</Col>
@@ -450,7 +450,7 @@ export default {
   .ivu-table {
     color:#222222;
   }
-  .ivu-table .fixed-row-height td{
+  .fixed-row-height td{
     height: 30px;
   }
   .ivu-table .table-color-row td{

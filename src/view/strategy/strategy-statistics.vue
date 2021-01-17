@@ -1,7 +1,6 @@
 <template>
   <div>
-    <Tabs v-model="currentTabName" type="card" @on-click="tabClicked">
-
+    <Tabs v-model="currentTabName" @on-click="tabClicked">
       <TabPane label="月统计" name="monthly" style="min-height: 300px">
         <Row style="height:40px" :gutter="16" type="flex" justify="start" align="middle">
           <Col>当前月份：</Col>

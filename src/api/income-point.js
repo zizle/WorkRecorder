@@ -55,10 +55,28 @@ export const removeCustomerIndex = (indexId, userToken) => {
 }
 
 // 统计用户的客户数量以及权益
-export const getStatisticsCustomerRevenue = (userToken, is_audit) => {
+export const getMonthStatisticsRevenue = (queryDate) => {
   return axios.request({
-    url: 'api/income/statistics/',
-    params: { user_token: userToken, is_audit: is_audit },
+    url: 'api/income/statistics/month/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+// 统计用户的客户数量以及权益
+export const getYearStatisticsRevenue = (queryDate) => {
+  return axios.request({
+    url: 'api/income/statistics/year/',
+    params: { query_date: queryDate },
+    method: 'get'
+  })
+}
+
+// 按请求者统计用户的客户数量以及权益
+export const getCustomerRevenueYearTotal = (userToken) => {
+  return axios.request({
+    url: 'api/income/statistics/year-total/',
+    params: { user_token: userToken },
     method: 'get'
   })
 }

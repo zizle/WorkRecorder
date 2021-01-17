@@ -110,13 +110,24 @@ export default {
     })
   },
   mounted () {
+    // 初始化记录日期
+    const curDate = new Date()
+    let y = curDate.getFullYear()
+    let m = curDate.getMonth()
+    if (m === 1) {
+      y = y - 1
+      m = 12
+    } else {
+      m = m - 1
+    }
+    this.newIndexData.create_date = new Date(y, m, 0)
+
     this.getCurUserCustomers()
   },
   methods: {
     // 获取当前用户的所有客户
     getCurUserCustomers () {
       getUserCustomer(this.userToken).then(res => {
-        console.log(res)
         this.userCustomerList = res.data.customers
       }).catch(() => { this.$Message.error('获取客户列表失败!') })
     },
