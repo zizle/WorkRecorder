@@ -109,9 +109,10 @@ export default {
         {
           title: '收入',
           align: 'center',
-          render: (h, params) => {
-            return h('div', {}, params.row.sum_remain + params.row.sum_interest)
-          }
+          // render: (h, params) => {
+          //   return h('div', {}, params.row.sum_remain + params.row.sum_interest)
+          // }
+          key: 'sum_income'
         }
       ],
 
@@ -149,9 +150,10 @@ export default {
         {
           title: '总收入',
           align: 'center',
-          render: (h, params) => {
-            return h('div', {}, params.row.sum_remain + params.row.sum_interest)
-          }
+          // render: (h, params) => {
+          //   return h('div', {}, params.row.sum_remain + params.row.sum_interest)
+          // }
+          key: 'sum_income'
         }
       ]
 

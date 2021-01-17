@@ -18,7 +18,7 @@ export default {
     userId: '',
     avatarImgPath: '',
     token: getToken(),
-    access: '',
+    access: [],
     systemUsers: [],
     hasGetInfo: false,
     unreadCount: 0,

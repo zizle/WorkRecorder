@@ -267,7 +267,8 @@ export default [
         name: 'audit_abnormal',
         meta: {
           title: '管理非常态工作',
-          icon: 'md-hammer'
+          icon: 'md-hammer',
+          access: ['admin', 'abnormal']
         },
         component: () => import('@/view/abnormal/abnormal-audit.vue')
       },
@@ -400,26 +401,26 @@ export default [
       }
     ]
   },
-  {
-    path: '',
-    name: 'help',
-    meta: {
-      title: '使用手册',
-      icon: 'ios-book'
-    },
-    component: Main,
-    children: [
-      {
-        path: '/helper',
-        name: 'helper',
-        meta: {
-          title: '首页说明',
-          icon: 'ios-book'
-        },
-        component: () => import('@/view/helper/helper.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   name: 'help',
+  //   meta: {
+  //     title: '使用手册',
+  //     icon: 'ios-book'
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: '/helper',
+  //       name: 'helper',
+  //       meta: {
+  //         title: '首页说明',
+  //         icon: 'ios-book'
+  //       },
+  //       component: () => import('@/view/helper/helper.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/',
     name: '_avatar',
