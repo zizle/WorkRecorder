@@ -399,10 +399,10 @@ export default {
             item.module_name = '短讯通'
             this.userOwnTableData.push(item)
           })
-          this.shortMsgOk = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.shortMsgOk = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },
@@ -433,10 +433,10 @@ export default {
             item.module_name = '投顾策略'
             this.userOwnTableData.push(item)
           })
-          this.strategyOk = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.strategyOk = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },
@@ -457,10 +457,10 @@ export default {
             item.module_name = '投资方案'
             this.userOwnTableData.push(item)
           })
-          this.investmentOK = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.investmentOK = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },
@@ -481,10 +481,10 @@ export default {
             item.module_name = '非常态工作'
             this.userOwnTableData.push(item)
           })
-          this.abnormalOk = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.abnormalOk = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },
@@ -505,10 +505,10 @@ export default {
             item.module_name = '热点文章'
             this.userOwnTableData.push(item)
           })
-          this.articleOk = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.articleOk = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },
@@ -530,10 +530,10 @@ export default {
             item.module_name = '值班信息'
             this.userOwnTableData.push(item)
           })
-          this.ondutyOk = 1
-          if (this.isAllDataOk() === 1) {
-            this.userOwnTableLoading = false
-          }
+        }
+        this.ondutyOk = 1
+        if (this.isAllDataOk() === 1) {
+          this.userOwnTableLoading = false
         }
       })
     },

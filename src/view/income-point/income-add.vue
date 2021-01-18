@@ -114,7 +114,7 @@ export default {
     const curDate = new Date()
     let y = curDate.getFullYear()
     let m = curDate.getMonth()
-    if (m === 1) {
+    if (m === 0) {
       y = y - 1
       m = 12
     } else {
