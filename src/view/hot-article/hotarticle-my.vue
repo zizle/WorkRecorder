@@ -9,9 +9,23 @@
       <Col><DatePicker v-model="endDate" size="small" style="width:115px" @on-change="endDateChanged"></DatePicker></Col>
       <Col><label><Input size="small" prefix="ios-search" placeholder="关键词段辅助检索" v-model="searchKeyWord" /></label></Col>
       <Col><Button size="small" type="primary" @click="handleQueryArticle">查询</Button></Col>
+      <Col><Checkbox v-model="showSpecialArticle">2020年专题研究记录</Checkbox></Col>
     </Row>
   </Card>
-    <Row>
+    <!--    2020年专题信息显示表格-->
+  <Row v-if="showSpecialArticle">
+    <div style="margin: 5px;color: #fd7c3c"><h4>2020年我的专题研究</h4></div>
+    <Table
+      border
+      size="small"
+      :columns="monographicTableColumns"
+      :data="monographicTableData"
+    >
+
+    </Table>
+  </Row>
+
+  <Row v-else>
 <!--      结果表格-->
     <div style="margin: 5px;color: #fd7c3c"><h4>我的热点文章</h4></div>
     <Table
@@ -120,6 +134,7 @@
 
 <script>
 import { queryHotArticle, modifyHotArticle, deleteOneArticle } from '@/api/hot-article'
+import { getMonographic } from '@/api/monographic'
 import { formatDate } from '@/libs/util'
 import { mapState } from 'vuex'
 export default {
@@ -130,15 +145,67 @@ export default {
     this.startDate = cDate
     // 初始化数据
     this.getCurrentArticle()
+    // 专题研究删除作者列
+    if (this.isShowMonographicAuthor()) {
+    } else {
+      this.monographicTableColumns.splice(1, 1)
+    }
   },
   computed: {
     ...mapState({
       userToken: state => state.user.token,
+      access: state => state.user.access,
       varietyList: state => state.variety.varietyList
     })
   },
   data () {
     return {
+      showSpecialArticle: false,
+      monographicTableColumns: [
+        {
+          title: '日期',
+          key: 'create_time',
+          align: 'center'
+        },
+        {
+          title: '作者',
+          key: 'username',
+          align: 'center'
+        },
+        {
+          title: '标题',
+          key: 'title',
+          align: 'center',
+          minWidth: 200
+        },
+        {
+          title: '字数',
+          key: 'words',
+          align: 'center'
+        },
+        {
+          title: '评级得分',
+          key: 'score',
+          align: 'center'
+        },
+        {
+          title: '附件',
+          align: 'center',
+          render: (h, params) => {
+            let annexEle = null
+            if (params.row.annex === '') {
+              annexEle = h('div', {}, '无')
+            } else {
+              annexEle = h('a', {
+                domProps: { href: params.row.annex_url, target: 'blank' }
+              }, '下载')
+            }
+            return annexEle
+          }
+        }
+      ],
+      monographicTableData: [],
+
       startDate: new Date(),
       endDate: new Date(),
       searchKeyWord: '',
@@ -196,6 +263,19 @@ export default {
     }
   },
   methods: {
+    isShowMonographicAuthor () {
+      let show = false
+      this.access.some((item, index) => {
+        if (item === 'admin') {
+          show = true
+          return show
+        } else {
+          show = false
+        }
+      })
+      return show
+    },
+
     startDateChanged (dateStr) {
       if (dateStr > formatDate(this.endDate)) {
         this.$Modal.error({ title: '错误', content: '开始日期需要小于等于结束日期!' })
@@ -211,7 +291,13 @@ export default {
     },
 
     handleQueryArticle () {
-      this.getCurrentArticle()
+      if (this.showSpecialArticle) {
+        // 查询专题研究数据
+        this.getMonographicArticle()
+      } else {
+        // 查询热点文章数据
+        this.getCurrentArticle()
+      }
     },
     getCurrentArticle () {
       const endDate = new Date()
@@ -229,6 +315,13 @@ export default {
         const data = res.data
         this.articleList = data.articles
       }).catch(() => { this.$Message.error('获取数据失败了!') })
+    },
+
+    getMonographicArticle () {
+      getMonographic(this.userToken).then(res => {
+        const data = res.data
+        this.monographicTableData = data.articles
+      })
     },
 
     showRowDetail (rowData) {
