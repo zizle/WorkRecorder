@@ -140,9 +140,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'article-my',
   mounted () {
-    const cDate = new Date(this.startDate)
-    cDate.setMonth(cDate.getMonth() - 1)
-    this.startDate = cDate
+    this.setCurrentRange()
     // 初始化数据
     this.getCurrentArticle()
     // 专题研究删除作者列
@@ -157,6 +155,16 @@ export default {
       access: state => state.user.access,
       varietyList: state => state.variety.varietyList
     })
+  },
+  watch: {
+    showSpecialArticle (newVal, oldVal) {
+      if (newVal) {
+        this.setSpecialYear()
+        this.getMonographicArticle()
+      } else {
+        this.setCurrentRange()
+      }
+    }
   },
   data () {
     return {
@@ -237,7 +245,7 @@ export default {
           key: 'is_publish',
           align: 'center',
           render: (h, params) => {
-            return h('div', {}, params.row.is_examined ? '是' : '否')
+            return h('div', {}, params.row.is_publish ? '是' : '否')
           }
         },
         {
@@ -263,6 +271,16 @@ export default {
     }
   },
   methods: {
+    setSpecialYear () {
+      this.startDate = new Date(2020, 0, 1)
+      this.endDate = new Date(2020, 11, 31)
+    },
+    setCurrentRange () {
+      const cDate = new Date()
+      cDate.setMonth(cDate.getMonth() - 1)
+      this.startDate = cDate
+      this.endDate = new Date()
+    },
     isShowMonographicAuthor () {
       let show = false
       this.access.some((item, index) => {

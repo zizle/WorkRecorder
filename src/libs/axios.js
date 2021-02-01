@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
-import { Modal } from 'iview'
-import router from '@/router'
+// import { Modal } from 'iview'
+// import router from '@/router'
 // import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
@@ -63,18 +63,20 @@ class HttpRequest {
         }
       }
       addErrorLog(errorInfo)
-      // 全局拦截登录超时
-      if (errorInfo.status === 401) {
-        Modal.warning({
-          title: '登录超时',
-          content: '请重新登录',
-          onOk: () => {
-            store.commit('setToken', '')
-            store.commit('setAccess', [])
-            router.push({ name: 'login' })
-          }
-        })
-      }
+      // // 全局拦截登录超时
+      // if (errorInfo.status === 401) {
+      //   Modal.warning({
+      //     title: '登录超时',
+      //     content: '请重新登录',
+      //     onOk: () => {
+      //       store.commit('setToken', '')
+      //       store.commit('setAccess', [])
+      //       router.push({ name: 'login' })
+      //     }
+      //   })
+      //   console.log(error.response)
+      //   console.log('拦截器401')
+      // }
       return Promise.reject(error)
     })
   }
