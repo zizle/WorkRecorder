@@ -12,11 +12,11 @@ export default {
     }
   },
   getters: {
-    getVarietyList: state => state.varietyList
   },
   actions: {
     // 获取系统所有品种
     getAllVarieties ({ commit }) {
+      console.log('请求系统品种')
       return new Promise((resolve, reject) => {
         getVarieties().then(res => {
           const data = res.data

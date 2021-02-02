@@ -26,15 +26,19 @@ export default {
   methods: {
     ...mapActions([
       'handleLogin',
-      'getUserInfo'
+      'getUserInfo',
+      'getSystemUsers',
+      'getAllVarieties'
     ]),
     handleSubmit ({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
-        console.log('登录成功的逻辑')
-        this.getUserInfo().then(res => {
-          console.log(res)
-          this.$router.push({
-            name: this.$config.homeName
+      this.handleLogin({ userName, password }).then(() => {
+        this.getUserInfo().then(() => {
+          this.getSystemUsers().then(() => {
+            this.getAllVarieties().then(() => {
+              this.$router.push({
+                name: this.$config.homeName
+              })
+            })
           })
         })
       }, (err) => {
