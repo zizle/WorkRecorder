@@ -193,7 +193,8 @@ export default {
   computed: {
     ...mapState({
       userToken: state => state.user.token,
-      userAccess: state => state.user.access
+      userAccess: state => state.user.access,
+      systemUsers: state => state.user.systemUsers
     })
   },
   data () {
@@ -283,6 +284,7 @@ export default {
       curStatisticsYear: '',
 
       isAdmin: false,
+      groupUserIds: [],
       // 用户个人展示的表
       userOwnTableColumns: [],
       userOwnTableData: [],
@@ -297,6 +299,11 @@ export default {
     }
   },
   mounted () {
+    console.log(this.userToken)
+    console.log(this.userAccess)
+
+    this.setIsAdmin()
+    this.setGroupIds()
     this.initMonthColumns()
 
     this.getCurYearMsg() // 获取用户短信通的当年累计
@@ -306,21 +313,28 @@ export default {
     this.getCurYearArticleWork() //  获取用户热点文章当年累计
     this.getCurYearOndutyMsgWork() //  获取用户值班信息当年累计
     this.getCureYearIncomeRevenue() //  获取收入指标的当年累计表
-
-    this.setIsAdmin()
-    console.log(this.isAdmin)
   },
   methods: {
-    // 判断是管理员还是普通用户
+    // 判断是管理员(组长)还是普通用户
     setIsAdmin () {
       this.userAccess.some((item, index) => {
-        if (item === 'admin') {
+        if (item === 'admin' || item === 'leader') {
           this.isAdmin = true
           return true
         } else {
           this.isAdmin = false
         }
       })
+    },
+
+    // 设置组ids
+    setGroupIds () {
+      console.log(this.systemUsers)
+      const ids = []
+      this.systemUsers.forEach((item, index) => {
+        ids.push(item.id)
+      })
+      this.groupUserIds = ids
     },
 
     // 初始化月份表头
@@ -383,6 +397,7 @@ export default {
       )
       this.curStatisticsYear = y
     },
+
     getCurYearMsg () {
       getShortMsgYearTotal(this.userToken).then(res => {
         const data = res.data

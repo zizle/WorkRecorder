@@ -130,6 +130,7 @@ export default {
         }
       })
     },
+
     // 设置头像
     uploadUserAvatar ({ state, commit }, { file }) {
       return new Promise((resolve, reject) => {
@@ -150,8 +151,9 @@ export default {
       })
     },
 
-    // 获取系统中的所有用户
+    // 根据登录用户的身份获取系统中相关的所有用户
     getSystemUsers ({ state, commit }) {
+      console.log('请求用户')
       return new Promise((resolve, reject) => {
         getUserList(state.token).then(res => {
           const data = res.data

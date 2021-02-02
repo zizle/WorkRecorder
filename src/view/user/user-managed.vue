@@ -1,6 +1,14 @@
 <template>
   <div>
-    <Table border stripe size="small" :columns="userTableColumns" :data="userList" :loading="tableOnLoading">
+    <Checkbox-group v-model="tableRowsChecked" @on-change="changeTableRows">
+        <Checkbox label="宏观金融">宏观金融</Checkbox>
+        <Checkbox label="农产品组">农产品组</Checkbox>
+        <Checkbox label="化工小组">化工小组</Checkbox>
+        <Checkbox label="金属小组">金属小组</Checkbox>
+        <Checkbox label="创新部门">创新部门</Checkbox>
+        <Checkbox label="其他">其他</Checkbox>
+    </Checkbox-group>
+    <Table border stripe size="small" :columns="userTableColumns" :data="userListShow" :loading="tableOnLoading">
       <template slot-scope="{ row, index }" slot="action">
         <Button type="info" size="small" @click="handleUserAccess(row)">分配</Button>
       </template>
@@ -90,8 +98,33 @@ export default {
               })
             ])
           }
+        },
+        {
+          title: '组长',
+          maxWidth: 70,
+          render: (h, params) => {
+            return h('div', [
+              h('i-switch', {
+                props: {
+                  type: 'primary',
+                  value: params.row.is_leader === 1
+                },
+                scopedSlots: {
+                  open: () => h('span', '是'),
+                  close: () => h('span', '否')
+                },
+                on: {
+                  'on-change': value => {
+                    this.switchUserLeader(params.row.id, value)
+                  }
+                }
+              })
+            ])
+          }
         }
-      ]
+      ],
+      tableRowsChecked: ['宏观金融', '农产品组', '化工小组', '金属小组', '创新部门', '其他'],
+      userListShow: []
     }
   },
   computed: {
@@ -101,6 +134,7 @@ export default {
     })
   },
   mounted () {
+    this.userListShow = this.userList
   },
   methods: {
     handleUserAccess (userItem) {
@@ -127,6 +161,21 @@ export default {
       console.log(userId)
       console.log(switchVal)
       this.$Message.error('设置无效,该功能未上线。')
+    },
+    changeTableRows () {
+      let data = []
+      this.tableRowsChecked.forEach(row => {
+        this.userList.forEach(item => {
+          if (item.organization_name === row) {
+            data.push(item)
+          }
+        })
+      })
+      this.userListShow = data
+    },
+    switchUserLeader (userId, switchVal) {
+      console.log(userId)
+      console.log(switchVal)
     }
   }
 }
