@@ -401,6 +401,20 @@ export default [
       }
     ]
   },
+  {
+    path: '',
+    name: 'download',
+    meta: { title: '我要下载', showAlways: true, icon: 'md-cloud-download' },
+    component: Main,
+    children: [
+      {
+        path: '/download-file',
+        name: 'download-file',
+        meta: { title: '文件下载', icon: 'ios-cloud-download-outline' },
+        component: () => import('@/view/download/download-file.vue')
+      }
+    ]
+  },
   // {
   //   path: '',
   //   name: 'help',

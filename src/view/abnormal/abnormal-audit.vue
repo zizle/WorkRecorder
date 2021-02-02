@@ -148,6 +148,11 @@ export default {
           minWidth: 120
         },
         {
+          title: '申请者',
+          key: 'applicant',
+          align: 'center'
+        },
+        {
           title: '评级得分',
           align: 'center',
           slot: 'editScore'
@@ -324,8 +329,8 @@ export default {
     },
     saveEditScore (rowData) {
       // 发起修改请求
-      if (this.editScore < 1) {
-        this.$Modal.error({ title: '错误', content: '分数值需大于0的整数!' })
+      if (this.editScore < 0) {
+        this.$Modal.error({ title: '错误', content: '分数值需大于等于0的整数!' })
         return
       }
       if (this.editScore > 5) {

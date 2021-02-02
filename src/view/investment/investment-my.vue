@@ -82,6 +82,12 @@
 <!-- 弹窗编辑方案-->
     <Modal v-model="isShowEdit" :model="currentRowData" title="编辑我的方案" @on-ok="submitEditInvestment" :loading="modifyLoading">
       <Form ref="editFrom" :label-width="80">
+        <FormItem label="实建均价">
+          <Input type="number" v-model="currentRowData.build_price"></Input>
+        </FormItem>
+        <FormItem label="实建手数">
+          <Input type="number" v-model="currentRowData.build_hands"></Input>
+        </FormItem>
         <FormItem label="实出均价">
           <Input type="number" v-model="currentRowData.out_price"></Input>
         </FormItem>
@@ -91,6 +97,15 @@
         <FormItem label="方案结果">
           <Input type="number" v-model="currentRowData.profit"></Input>
         </FormItem>
+        <FormItem label="评级得分">
+        <RadioGroup v-model="currentRowData.score">
+          <Radio :label=5>5</Radio>
+          <Radio :label=4>4</Radio>
+          <Radio :label=3>3</Radio>
+          <Radio :label=2>2</Radio>
+          <Radio :label=1>1</Radio>
+        </RadioGroup>
+      </FormItem>
         <FormItem label="方案状态">
           <RadioGroup v-model="currentRowData.is_running">
             <Radio :label=1>运行中</Radio>
@@ -289,6 +304,8 @@ export default {
       const bodyData = {
         user_token: this.userToken,
         investment_id: this.currentRowData.id,
+        build_price: this.currentRowData.build_price,
+        build_hands: this.currentRowData.build_hands,
         out_price: this.currentRowData.out_price,
         cutloss_price: this.currentRowData.cutloss_price,
         profit: this.currentRowData.profit,
