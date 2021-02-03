@@ -31,7 +31,6 @@ export default {
     this.modelExcelUrl = baseUrl + 'static/工作数据上传模板.xlsx'
   },
   methods: {
-
   }
 }
 </script>

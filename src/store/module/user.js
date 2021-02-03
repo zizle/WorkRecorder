@@ -19,8 +19,9 @@ export default {
     avatarImgPath: '',
     token: getToken(),
     access: [],
-    systemUsers: [],
     hasGetInfo: false,
+    systemUsers: [],
+    hasGetUsers: false,
     unreadCount: 0,
     messageUnreadList: [],
     messageReadedList: [],
@@ -44,11 +45,14 @@ export default {
       state.token = token
       setToken(token)
     },
+    setHasGetInfo (state, status) {
+      state.hasGetInfo = status
+    },
     setSystemUsers (state, users) {
       state.systemUsers = users
     },
-    setHasGetInfo (state, status) {
-      state.hasGetInfo = status
+    setHasGetUsers (state, status) {
+      state.hasGetUsers = status
     },
     setMessageCount (state, count) {
       state.unreadCount = count
@@ -153,11 +157,11 @@ export default {
 
     // 根据登录用户的身份获取系统中相关的所有用户
     getSystemUsers ({ state, commit }) {
-      console.log('请求用户')
       return new Promise((resolve, reject) => {
         getUserList(state.token).then(res => {
           const data = res.data
           commit('setSystemUsers', data.users)
+          commit('setHasGetUsers', true)
           resolve(data)
         }).catch(err => {
           reject(err)

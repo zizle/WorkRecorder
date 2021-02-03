@@ -4,11 +4,15 @@ import {
 
 export default {
   state: {
-    varietyList: []
+    varietyList: [],
+    hasGetVariety: false
   },
   mutations: {
     setVarieties (state, varieties) {
       state.varietyList = varieties
+    },
+    setHasGetVariety (state, status) {
+      state.hasGetVariety = status
     }
   },
   getters: {
@@ -16,12 +20,12 @@ export default {
   actions: {
     // 获取系统所有品种
     getAllVarieties ({ commit }) {
-      console.log('请求系统品种')
       return new Promise((resolve, reject) => {
         getVarieties().then(res => {
           const data = res.data
           commit('setVarieties', data.varieties)
-          resolve()
+          commit('setHasGetVariety', true)
+          resolve(data)
         }).catch(err => {
           reject(err)
         })

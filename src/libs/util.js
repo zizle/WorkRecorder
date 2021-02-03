@@ -414,3 +414,11 @@ export const formatDate = (dateItem) => {
   const d = (dateItem.getDate() + '').padStart(2, '0')
   return `${y}-${m}-${d}`
 }
+
+export const getUserGroupIds = (systemUsers) => {
+  const ids = []
+  systemUsers.forEach((item, index) => {
+    ids.push(item.id)
+  })
+  return ids
+}
