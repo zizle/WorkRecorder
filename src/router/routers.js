@@ -281,6 +281,16 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/abnormal/abnormal-statistics.vue')
+      },
+      {
+        path: '/abnormal',
+        name: 'searchabnormal',
+        meta: {
+          title: '非常态工作查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/abnormal/abnormal.vue')
+        // component: () => import('@/view/components/drag-drawer')
       }
     ]
   },

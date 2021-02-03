@@ -41,15 +41,38 @@ router.beforeEach((to, from, next) => {
   } else if (token && to.name === LOGIN_PAGE_NAME) {
     // 已登录且要跳转的页面是登录页
     next({
-      name: homeName // 跳转到homeName页
+      name: homeName // 跳转到homeName页,next()内含页面产生,会继续执行一遍beforeEach
     })
   } else {
-    if (store.state.user.hasGetInfo) {
+    if (store.state.user.hasGetInfo && store.state.user.hasGetUsers && store.state.variety.hasGetVariety) {
       turnTo(to, store.state.user.access, next)
     } else {
+      // 分发获取数据
       store.dispatch('getUserInfo').then(user => {
         // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
-        turnTo(to, user.access, next)
+        // console.log('没有用户信息，进行获取')
+        // console.log(user)
+        // 拉取用户列表
+        store.dispatch('getSystemUsers').then(() => {
+          // console.log('没有用户列表，进行获取')
+          // console.log(sysUser)
+          // 拉取品种信息
+          store.dispatch('getAllVarieties').then(() => {
+            // console.log('没有品种列表，进行获取')
+            // console.log(varieties)
+            turnTo(to, user.access, next)
+          }).catch(() => {
+            setToken('')
+            next({
+              name: 'login'
+            })
+          })
+        }).catch(() => {
+          setToken('')
+          next({
+            name: 'login'
+          })
+        })
       }).catch(() => {
         setToken('')
         next({

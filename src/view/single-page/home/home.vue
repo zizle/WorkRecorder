@@ -9,42 +9,42 @@
         <infor-card shadow color="#2d8cf0" icon="md-text" :icon-size="36">
           <count-to :end="msgCount" count-class="count-style"/>
           <p>短讯通</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{msgPercent}}%</p>
+          <p v-if="msgPercent!==100 && msgPercent!==0" class="module-percent">{{msgPercent}}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#19be6b" icon="md-locate" :icon-size="36">
           <count-to :end="strategyCount" count-class="count-style"/>
           <p>投顾策略</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{ strategyPercent }}%</p>
+          <p v-if="strategyPercent!==100 && strategyPercent!==0" class="module-percent">{{ strategyPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#ff9900" icon="md-book" :icon-size="36">
           <count-to :end="investmentCount" count-class="count-style"/>
           <p>投资方案</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{ investmentPercent }}%</p>
+          <p v-if="investmentPercent!==100 && investmentPercent!==0" class="module-percent">{{ investmentPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#ed3f14" icon="md-bookmark" :icon-size="36">
           <count-to :end="abnormalCount" count-class="count-style"/>
           <p>非常态工作</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{ abnormalPercent }}%</p>
+          <p v-if="abnormalPercent!==100 && abnormalPercent!==0" class="module-percent">{{ abnormalPercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px;margin-bottom:10px">
         <infor-card shadow color="#9A66E4" icon="ios-paper" :icon-size="36">
           <count-to :end="articleCount" count-class="count-style"/>
           <p>热点文章</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{ articlePercent }}%</p>
+          <p v-if="articlePercent!==100 && articlePercent!==0" class="module-percent">{{ articlePercent }}%</p>
         </infor-card>
       </Col>
       <Col span="4" style="height:120px;margin-bottom:10px" v-if="ondutyMsgCount!==0">
         <infor-card shadow color="#E46CBB" icon="ios-chatbubbles" :icon-size="36">
           <count-to :end="ondutyMsgCount" count-class="count-style"/>
           <p>值班信息</p>
-          <p v-if="msgPercent!==100" class="module-percent">{{ ondutyMsgPercent }}%</p>
+          <p v-if="ondutyMsgPercent!==100 && ondutyMsgPercent!==0" class="module-percent">{{ ondutyMsgPercent }}%</p>
         </infor-card>
       </Col>
     </Row>
@@ -299,9 +299,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.userToken)
-    console.log(this.userAccess)
-
     this.setIsAdmin()
     this.setGroupIds()
     this.initMonthColumns()
@@ -329,7 +326,6 @@ export default {
 
     // 设置组ids
     setGroupIds () {
-      console.log(this.systemUsers)
       const ids = []
       this.systemUsers.forEach((item, index) => {
         ids.push(item.id)
