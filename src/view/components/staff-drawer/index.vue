@@ -71,6 +71,7 @@ export default {
         this.checkAllStaff = false
       }
     },
+
     handleCheckAll () {
       if (this.indeterminate) {
         this.checkAllStaff = false
@@ -85,11 +86,32 @@ export default {
         this.checkedStaff = []
       }
     },
+
     visibleChange (visible) {
       this.$emit('visibleChange', visible)
     },
+
     checkStaffsChanged (staffVal) {
-      this.$emit('checkedChange', staffVal)
+      let checkName = '无'
+      if (staffVal.length === this.systemUsers.length) {
+        checkName = '全部'
+      } else if (staffVal.length === 1) {
+        checkName = this.getUserName(staffVal[0])
+      } else if (staffVal.length > 1) {
+        checkName = this.getUserName(staffVal[0]) + '等'
+      }
+      this.$emit('checkedChange', staffVal, checkName)
+    },
+
+    getUserName (userId) {
+      let name = '无'
+      this.systemUsers.some((item) => {
+        if (item.id === userId) {
+          name = item.username
+          return true
+        }
+      })
+      return name
     }
   }
 }

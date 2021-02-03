@@ -66,10 +66,10 @@ export const getAbnormalYearTotal = (userToken) => {
 }
 
 // 根据获取用户数据
-export const getAbnormalRecords = ({ currency, start, end }) => {
+export const getAbnormalRecords = ({ currency, start, end, kw }) => {
   return axios.request({
     url: 'api/abnormal/statistics/',
-    params: { currency: currency, start: start, end: end },
+    params: { currency: currency, start: start, end: end, kw: kw },
     method: 'get'
   })
 }

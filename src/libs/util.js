@@ -415,6 +415,13 @@ export const formatDate = (dateItem) => {
   return `${y}-${m}-${d}`
 }
 
+export const dateToString = (dateObj) => {
+  const y = dateObj.getFullYear()
+  const m = (dateObj.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dateObj.getDate() + '').padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 export const getUserGroupIds = (systemUsers) => {
   const ids = []
   systemUsers.forEach((item, index) => {
