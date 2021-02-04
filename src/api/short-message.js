@@ -90,3 +90,12 @@ export const getShortMsgYearTotal = (userToken) => {
     method: 'get'
   })
 }
+
+// 根据获取用户数据
+export const getShortMsgRecords = ({ currency, start, end, kw }) => {
+  return axios.request({
+    url: 'api/shtmsg/statistics/',
+    params: { currency: currency, start: start, end: end, kw: kw },
+    method: 'get'
+  })
+}

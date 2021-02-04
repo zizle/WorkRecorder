@@ -166,6 +166,15 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/short-message/shortmsg-statistics.vue')
+      },
+      {
+        path: '/shortmessage',
+        name: 'shortmessage',
+        meta: {
+          title: '短讯通记录查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/short-message/short-message.vue')
       }
     ]
   },
