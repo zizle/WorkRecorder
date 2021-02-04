@@ -22,6 +22,8 @@
       border
       stripe
       size="small"
+      show-summary
+      sum-text="合计"
       :data="statisticsTableData"
       :columns="statisticsTableColumns"
     >
@@ -177,9 +179,14 @@ export default {
         { title: '日期', key: 'create_time', align: 'center' },
         { title: '标题', key: 'title', align: 'center', minWidth: 120 },
         { title: '申请方', key: 'applicant', align: 'center' },
-        { title: '评级得分', key: 'score', align: 'center' },
-        {
-          title: '是否有效',
+        { title: '评级得分',
+          key: 'score',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', {}, params.row.score === 0 ? '未评' : params.row.score)
+          }
+        },
+        { title: '是否有效',
           key: 'is_examined',
           align: 'center',
           render: (h, params) => {
