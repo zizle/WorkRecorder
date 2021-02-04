@@ -33,6 +33,7 @@ export default {
   props: ['showStaffDrawer'],
   computed: {
     ...mapState({
+      userAccess: state => state.user.access,
       systemUsers: state => state.user.systemUsers
     })
   },
@@ -45,6 +46,7 @@ export default {
     }
   },
   mounted () {
+    this.setIsLeader()
     this.allStaffId = getUserGroupIds(this.systemUsers)
     this.checkedStaff = this.allStaffId
     this.indeterminate = false
@@ -55,10 +57,21 @@ export default {
       checkedStaff: [],
       allStaffId: [],
       indeterminate: true,
-      checkAllStaff: true
+      checkAllStaff: true,
+      isLeader: false //  判断当前操作人员是不是leader
     }
   },
   methods: {
+    // 设置当前操作人员的身份
+    setIsLeader () {
+      this.userAccess.some((item) => {
+        if (item === 'admin' || item === 'leader') {
+          this.isLeader = true
+          return true
+        }
+      })
+    },
+
     checkAllGroupChange (data) {
       if (data.length === this.allStaffId.length) {
         this.indeterminate = false
@@ -100,7 +113,7 @@ export default {
       } else if (staffVal.length > 1) {
         checkName = this.getUserName(staffVal[0]) + '等'
       }
-      this.$emit('checkedChange', staffVal, checkName)
+      this.$emit('checkedChange', staffVal, checkName, this.isLeader)
     },
 
     getUserName (userId) {
