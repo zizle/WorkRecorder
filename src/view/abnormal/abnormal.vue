@@ -24,6 +24,7 @@
       size="small"
       show-summary
       sum-text="合计"
+      :row-class-name="fixedRowHeight"
       :data="statisticsTableData"
       :columns="statisticsTableColumns"
     >
@@ -165,14 +166,15 @@ export default {
       isShowStaff: false, //  是否显示人员选择框
       isNotInitData: true, // 数据是否初始化选项
       isLeader: false,
-
+      loadingStatistics: true,
       statisticsTableData: [], // 统计表数据
       statisticsTableColumns: [
         { title: '姓名', key: 'username', align: 'center' },
-        { title: '数量', key: 'total_count', align: 'center' },
+        { title: '数量', key: 'total_count', align: 'center', sortable: true, sortType: 'desc' },
         { title: '瑞币', key: 'swiss_coin', align: 'center' },
         { title: '评级总分', key: 'score', align: 'center' }
       ],
+      loadingDetailRecords: false,
       detailTableData: [], // 详情表数据
       detailTableColumns: [
         { title: '姓名', key: 'username', align: 'center' },
@@ -217,6 +219,7 @@ export default {
         this.$Modal.info({ title: '提示', content: '要查询的人员不能为空!' })
         return
       }
+      this.setLoadingData(true)
       const seDates = this.getStartEndDate()
       const params = {
         currency: this.userGroupIds.toString(),
@@ -229,6 +232,7 @@ export default {
         this.statisticsTableData = data.statistics
         this.detailTableData = data.records
         this.isNotInitData = false
+        this.setLoadingData(false)
       })
     },
     // 子组件传出抽屉显示的状态
@@ -330,13 +334,23 @@ export default {
       if (!visible) {
         this.currentRowData = {} // 清空当前缓存的数据
       }
+    },
+    fixedRowHeight (row, index) {
+      return 'table-fixed-height'
+    },
+    setLoadingData (loading) {
+      this.loadingStatistics = loading
+      this.loadingDetailRecords = loading
     }
   }
 }
 </script>
 
-<style scoped>
-.detail-content{
+<style>
+  .detail-content{
   color: #3f8deb
 }
+  .table-fixed-height td{
+    height: 28px;
+  }
 </style>

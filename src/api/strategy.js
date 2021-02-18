@@ -56,3 +56,12 @@ export const getStrategyYearTotal = (userToken) => {
     method: 'get'
   })
 }
+
+// 根据用户获取用户数据
+export const getStrategyRecords = ({ currency, start, end, kw }) => {
+  return axios.request({
+    url: 'api/strategy/statistics/',
+    params: { currency: currency, start: start, end: end, kw: kw },
+    method: 'get'
+  })
+}
