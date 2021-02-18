@@ -180,7 +180,7 @@ export default [
   },
   {
     path: '',
-    name: 'strategy',
+    name: '_strategy',
     meta: { title: '投顾策略', showAlways: true, icon: 'md-locate' },
     component: Main,
     children: [
@@ -208,12 +208,21 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/strategy/strategy-statistics.vue')
+      },
+      {
+        path: '/strategy',
+        name: 'strategy',
+        meta: {
+          title: '投顾策略查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/strategy/strategy.vue')
       }
     ]
   },
   {
     path: '',
-    name: 'investment',
+    name: '_investment',
     meta: { title: '投资方案', showAlways: true, icon: 'md-book' },
     component: Main,
     children: [
@@ -244,6 +253,15 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/investment/investment-statistics.vue')
+      },
+      {
+        path: '/investment',
+        name: 'investment',
+        meta: {
+          title: '投资方案查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/investment/investment.vue')
       }
     ]
   },
