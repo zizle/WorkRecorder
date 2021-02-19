@@ -73,10 +73,10 @@ export const getYearStatisticsRevenue = (queryDate) => {
 }
 
 // 按请求者统计用户的客户数量以及权益
-export const getCustomerRevenueYearTotal = (userToken) => {
+export const getCustomerRevenueYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/income/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
     method: 'get'
   })
 }

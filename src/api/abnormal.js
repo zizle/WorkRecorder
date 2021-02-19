@@ -57,10 +57,10 @@ export const getYearAbnormalStatistics = (queryDate) => {
 }
 
 // 用户获取自己当年的累计数
-export const getAbnormalYearTotal = (userToken) => {
+export const getAbnormalYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/abnormal/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
     method: 'get'
   })
 }

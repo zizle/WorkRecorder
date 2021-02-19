@@ -49,10 +49,10 @@ export const getYearStrategyStatistics = (queryDate) => {
 }
 
 // 用户获取自己当年的累计数
-export const getStrategyYearTotal = (userToken) => {
+export const getStrategyYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/strategy/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
     method: 'get'
   })
 }

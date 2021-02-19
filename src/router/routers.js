@@ -354,6 +354,24 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/hot-article/hotarticle-statistics.vue')
+      },
+      {
+        path: '/monographic',
+        name: 'monographic',
+        meta: {
+          title: '2020年专题研究',
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/hot-article/monographic.vue')
+      },
+      {
+        path: '/hot-article',
+        name: 'hotarticle',
+        meta: {
+          title: '热点文章查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/hot-article/hot-article.vue')
       }
     ]
   },
@@ -435,6 +453,15 @@ export default [
           access: ['admin']
         },
         component: () => import('@/view/onduty-message/onduty-statistics.vue')
+      },
+      {
+        path: '/onduty',
+        name: 'onduty',
+        meta: {
+          title: '值班信息查询',
+          icon: 'md-search'
+        },
+        component: () => import('@/view/onduty-message/onduty.vue')
       }
     ]
   },

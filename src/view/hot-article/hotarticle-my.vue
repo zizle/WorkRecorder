@@ -21,7 +21,6 @@
       :columns="monographicTableColumns"
       :data="monographicTableData"
     >
-
     </Table>
   </Row>
 
@@ -45,7 +44,6 @@
       </template>
     </Table>
   </Row>
-
 <!--   弹窗显示文章的其他信息-->
   <Modal v-model="isShowRowDetail" class-name="detail-modal" title="文章的其他信息">
     <div>

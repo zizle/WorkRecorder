@@ -115,7 +115,7 @@ export default {
                 },
                 on: {
                   'on-change': value => {
-                    this.switchUserLeader(params.row.id, value)
+                    this.switchUserLeader(params.row, value)
                   }
                 }
               })
@@ -173,9 +173,27 @@ export default {
       })
       this.userListShow = data
     },
-    switchUserLeader (userId, switchVal) {
-      console.log(userId)
-      console.log(switchVal)
+    switchUserLeader (userData, switchVal) {
+      // 整理用户的access
+      let cacheAccess = []
+      userData.access.forEach(item => {
+        if (item !== 'leader') {
+          cacheAccess.push(item)
+        }
+      })
+      if (switchVal) {
+        cacheAccess.push('leader')
+      }
+      // 发起设置access
+      const userAccess = {
+        user_id: userData.id,
+        user_access: cacheAccess
+      }
+      setUserAccess(userAccess, this.userToken).then(res => {
+        this.$Message.success('设置成功！')
+      }).catch(() => {
+        this.$Message.error('设置失败!')
+      })
     }
   }
 }

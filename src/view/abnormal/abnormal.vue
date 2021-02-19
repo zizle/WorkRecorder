@@ -17,20 +17,20 @@
       </Row>
     </Card>
 <!--    统计表-->
-    <div style="margin: 5px;color: #fd7c3c"><h4>我的非常规工作</h4></div>
+    <div style="margin: 5px;color: #fd7c3c"><h4>非常规工作统计</h4></div>
     <Table
       border
       stripe
       size="small"
-      show-summary
       sum-text="合计"
+      :show-summary="isLeader"
       :row-class-name="fixedRowHeight"
       :data="statisticsTableData"
       :columns="statisticsTableColumns"
     >
     </Table>
 <!--    详情数据表-->
-    <div style="margin: 5px;color: #fd7c3c"><h4>详细数据</h4></div>
+    <div style="margin: 5px;color: #fd7c3c"><h4>详细记录({{detailTableData.length}})</h4></div>
     <Table
       border
       stripe

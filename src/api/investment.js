@@ -49,10 +49,19 @@ export const getYearInvestmentStatistics = (queryDate) => {
 }
 
 // 用户获取自己当年的累计数
-export const getInvestmentYearTotal = (userToken) => {
+export const getInvestmentYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/investment/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
+    method: 'get'
+  })
+}
+
+// 根据参数获取用户数据
+export const getInvestmentRecords = ({ currency, start, end, kw }) => {
+  return axios.request({
+    url: 'api/investment/statistics/',
+    params: { currency: currency, start: start, end: end, kw: kw },
     method: 'get'
   })
 }

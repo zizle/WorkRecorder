@@ -22,8 +22,8 @@
       border
       stripe
       size="small"
-      show-summary
       sum-text="合计"
+      :show-summary="isLeader"
       :loading="loadingStatistics"
       :row-class-name="fixedRowHeight"
       :data="statisticsTableData"
@@ -31,7 +31,7 @@
     >
     </Table>
 <!--    详情数据-->
-    <div style="margin: 5px;color: #fd7c3c"><h4>详细记录</h4></div>
+    <div style="margin: 5px;color: #fd7c3c"><h4>详细记录({{detailListData.length}})</h4></div>
     <List :header="listHeaderText" border size="small" item-layout="vertical">
     <ListItem v-for="item in detailListData" :key="item.id">
       <Row :gutter="8" type="flex" justify="start" align="middle">

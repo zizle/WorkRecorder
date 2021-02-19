@@ -8,6 +8,14 @@ export const uploadExcel = (formData) => {
   })
 }
 
+export const addShortMessage = (formData) => {
+  return axios.request({
+    url: 'api/shtmsg/add/',
+    data: formData,
+    method: 'post'
+  })
+}
+
 export const getShortMessage = (data) => {
   return axios.request({
     url: 'api/shtmsg/',
@@ -83,10 +91,10 @@ export const getYearDetail = (sDate) => {
 }
 
 // 用户获取自己当年的累计数
-export const getShortMsgYearTotal = (userToken) => {
+export const getShortMsgYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/shtmsg/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
     method: 'get'
   })
 }

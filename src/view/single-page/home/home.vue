@@ -395,7 +395,7 @@ export default {
     },
 
     getCurYearMsg () {
-      getShortMsgYearTotal(this.userToken).then(res => {
+      getShortMsgYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.msgCount = data.total_count
         this.msgPercent = data.percent
@@ -428,7 +428,7 @@ export default {
     },
 
     getCurYearStrategy () {
-      getStrategyYearTotal(this.userToken).then(res => {
+      getStrategyYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.strategyCount = data.total_count
         this.strategyPercent = data.percent
@@ -453,7 +453,7 @@ export default {
     },
 
     getCurYearInvestment () {
-      getInvestmentYearTotal(this.userToken).then(res => {
+      getInvestmentYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.investmentCount = data.total_count
         this.investmentPercent = data.percent
@@ -477,7 +477,7 @@ export default {
     },
 
     getCurYearAbnormalWork () {
-      getAbnormalYearTotal(this.userToken).then(res => {
+      getAbnormalYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.abnormalCount = data.total_count
         this.abnormalPercent = data.percent
@@ -501,7 +501,7 @@ export default {
     },
 
     getCurYearArticleWork () {
-      getArticleYearTotal(this.userToken).then(res => {
+      getArticleYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.articleCount = data.total_count
         this.articlePercent = data.percent
@@ -525,7 +525,7 @@ export default {
     },
 
     getCurYearOndutyMsgWork () {
-      getOndutyMsgYearTotal(this.userToken).then(res => {
+      getOndutyMsgYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.ondutyMsgCount = data.total_count
         this.ondutyMsgPercent = data.percent
@@ -550,7 +550,7 @@ export default {
     },
 
     getCureYearIncomeRevenue () {
-      getCustomerRevenueYearTotal(this.userToken).then(res => {
+      getCustomerRevenueYearTotal(this.userToken, this.groupUserIds.toString()).then(res => {
         const data = res.data
         this.revenueTableData = data.statistics
         this.revenueTableLoading = false

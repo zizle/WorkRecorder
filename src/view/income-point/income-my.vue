@@ -134,7 +134,6 @@ export default {
       const cstId = rowData.id
       this.currentCustomerName = rowData.customer_name
       queryCustomerIndex(cstId).then(res => {
-        console.log(res)
         this.customerIndexes = res.data.indexes
       }).catch(() => {
         this.$Message.error('查询记录失败了!')

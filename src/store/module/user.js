@@ -40,6 +40,14 @@ export default {
     },
     setAccess (state, access) {
       state.access = access
+      access.forEach(item => {
+        if (item === 'leader') {
+          state.userName = state.userName + '(组长)'
+        }
+        if (item === 'admin') {
+          state.userName = state.userName + '(管理员)'
+        }
+      })
     },
     setToken (state, token) {
       state.token = token

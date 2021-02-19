@@ -67,10 +67,19 @@ export const getYearOndutyMsgStatistics = (sDate) => {
 // }
 
 // 用户获取自己当年的累计数
-export const getOndutyMsgYearTotal = (userToken) => {
+export const getOndutyMsgYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/onduty/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
+    method: 'get'
+  })
+}
+
+// 根据获取用户数据
+export const getOndutyMsgRecords = ({ currency, start, end, kw }) => {
+  return axios.request({
+    url: 'api/onduty/statistics/',
+    params: { currency: currency, start: start, end: end, kw: kw },
     method: 'get'
   })
 }

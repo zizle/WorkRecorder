@@ -49,10 +49,19 @@ export const getYearArticleStatistics = (queryDate) => {
 }
 
 // 用户获取自己当年的累计数
-export const getArticleYearTotal = (userToken) => {
+export const getArticleYearTotal = (userToken, currency) => {
   return axios.request({
     url: 'api/article/statistics/year-total/',
-    params: { user_token: userToken },
+    params: { user_token: userToken, currency: currency },
+    method: 'get'
+  })
+}
+
+// 根据参数获取用户数据
+export const getHotArticleRecords = ({ currency, start, end, kw }) => {
+  return axios.request({
+    url: 'api/article/statistics/',
+    params: { currency: currency, start: start, end: end, kw: kw },
     method: 'get'
   })
 }
