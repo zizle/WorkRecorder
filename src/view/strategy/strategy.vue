@@ -42,7 +42,7 @@
         <Col span="3">开仓：<span class="blue">{{item.open_price}}</span></Col>
         <Col span="3">平仓：<span class="blue">{{item.close_price}}</span></Col>
         <Col span="3">盈亏：<span :class="item.profit>=0?'red':'green'">{{item.profit}}</span></Col>
-        <Col span="3">收益率：<span :class="(item.profit/100000).toFixed(2)>0?'red':'green'">{{(item.profit / 100000).toFixed(2) * 100}}%</span></Col>
+        <Col span="3">收益率：<span :class="(item.profit/100000).toFixed(2)>0?'red':'green'">{{(item.profit / 1000).toFixed(2)}}%</span></Col>
       </Row>
       <Row class="strategy-content">{{item.content}}</Row>
       <Row class="strategy-note" v-if="item.note">备注：{{item.note}}</Row>

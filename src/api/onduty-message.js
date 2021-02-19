@@ -8,6 +8,14 @@ export const ondutyUploadExcel = (formData) => {
   })
 }
 
+export const addOndutyMessage = (formData) => {
+  return axios.request({
+    url: 'api/onduty/add/',
+    data: formData,
+    method: 'post'
+  })
+}
+
 export const getOndutyMessage = (data) => {
   return axios.request({
     url: 'api/onduty/',
