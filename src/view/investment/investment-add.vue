@@ -142,7 +142,7 @@ export default {
         expire_date: new Date(),
         profit: '',
         is_publish: 1,
-        level: '',
+        level: 1,
         is_running: 0,
         note: ''
       },
